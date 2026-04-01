@@ -59,6 +59,25 @@ router.post('/', auth, async (req, res) => {
   }
 });
 
+// Submit a review for a trainer (metrics optional)
+router.post('/:id/reviews', auth, async (req, res) => {
+  const { rating, comment, metrics } = req.body;
+  try {
+    const review = new Review({
+      trainer: req.params.id,
+      client: req.user.id,
+      rating,
+      comment,
+      metrics,
+      createdAt: new Date()
+    });
+    await review.save();
+    res.status(201).json(review);
+  } catch (err) {
+    res.status(500).json({ msg: 'Server error' });
+  }
+});
+
 // Update trainer profile
 router.put('/:id', auth, async (req, res) => {
   try {
