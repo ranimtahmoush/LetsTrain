@@ -1,4 +1,5 @@
 const mongoose = require('mongoose');
+const bcrypt = require('bcryptjs');
 const User = require('./models/User');
 const Trainer = require('./models/Trainer');
 require('dotenv').config();
@@ -11,10 +12,14 @@ const seed = async () => {
     await User.deleteMany();
     await Trainer.deleteMany();
 
+    // Hash password
+    const salt = await bcrypt.genSalt(10);
+    const hashedPassword = await bcrypt.hash('password', salt);
+
     // Create users and trainers
     const trainersData = [
       {
-        user: { name: 'Ahmed Khalil', email: 'ahmed@example.com', password: 'password', role: 'trainer', location: 'Beirut' },
+        user: { name: 'Ahmed Khalil', email: 'ahmed@example.com', password: hashedPassword, role: 'trainer', location: 'Beirut' },
         trainer: {
           portfolio: [
             'https://via.placeholder.com/300x200?text=Weight+Loss+Success+Story',
@@ -30,7 +35,7 @@ const seed = async () => {
         }
       },
       {
-        user: { name: 'Layla Mansour', email: 'layla@example.com', password: 'password', role: 'trainer', location: 'Beirut' },
+        user: { name: 'Layla Mansour', email: 'layla@example.com', password: hashedPassword, role: 'trainer', location: 'Beirut' },
         trainer: {
           portfolio: [
             'https://via.placeholder.com/300x200?text=Yoga+Sunrise+Class',
@@ -46,7 +51,7 @@ const seed = async () => {
         }
       },
       {
-        user: { name: 'Omar Saad', email: 'omar@example.com', password: 'password', role: 'trainer', location: 'Tripoli' },
+        user: { name: 'Omar Saad', email: 'omar@example.com', password: hashedPassword, role: 'trainer', location: 'Tripoli' },
         trainer: {
           portfolio: [
             'https://via.placeholder.com/300x200?text=Boxing+Championship+Prep',
@@ -62,7 +67,7 @@ const seed = async () => {
         }
       },
       {
-        user: { name: 'Nadia El-Hussein', email: 'nadia@example.com', password: 'password', role: 'trainer', location: 'Beirut' },
+        user: { name: 'Nadia El-Hussein', email: 'nadia@example.com', password: hashedPassword, role: 'trainer', location: 'Beirut' },
         trainer: {
           portfolio: [
             'https://via.placeholder.com/300x200?text=Pilates+Reform+Session',
@@ -88,7 +93,7 @@ const seed = async () => {
     }
 
     // Create a sample client
-    const client = new User({ name: 'John Doe', email: 'client@example.com', password: 'password', role: 'client', location: 'Beirut' });
+    const client = new User({ name: 'John Doe', email: 'client@example.com', password: hashedPassword, role: 'client', location: 'Beirut' });
     await client.save();
 
     console.log('Seeded data');

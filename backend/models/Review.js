@@ -6,10 +6,10 @@ const reviewSchema = new mongoose.Schema({
   rating: { type: Number, min: 1, max: 5, required: true },
   comment: { type: String },
   metrics: {
-    knowledge: { type: Number, min: 1, max: 5 },
-    communication: { type: Number, min: 1, max: 5 },
-    motivation: { type: Number, min: 1, max: 5 },
-    results: { type: Number, min: 1, max: 5 }
+    knowledge: { type: Number, min: 0, max: 5 },
+    communication: { type: Number, min: 0, max: 5 },
+    motivation: { type: Number, min: 0, max: 5 },
+    results: { type: Number, min: 0, max: 5 }
   },
   createdAt: { type: Date, default: Date.now }
 });

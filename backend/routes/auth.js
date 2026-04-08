@@ -10,15 +10,20 @@ const router = express.Router();
 router.post('/register', async (req, res) => {
   const { name, email, password, role, location, phone } = req.body;
   try {
+    // Validate password length
+    if (!password || password.length < 4) {
+      return res.status(400).json({ msg: 'Password must be at least 4 characters' });
+    }
+
     let user = await User.findOne({ email });
-    if (user) return res.status(400).json({ msg: 'User already exists' });
+    if (user) return res.status(400).json({ msg: 'Email already exists' });
 
     user = new User({ name, email, password, role, location, phone });
     const salt = await bcrypt.genSalt(10);
     user.password = await bcrypt.hash(password, salt);
     await user.save();
 
-    const payload = { user: { id: user.id, role: user.role } };
+    const payload = { user: { id: user.id, name: user.name, role: user.role } };
     jwt.sign(payload, process.env.JWT_SECRET || 'secret', { expiresIn: 3600 }, (err, token) => {
       if (err) throw err;
       res.json({ token });
@@ -33,12 +38,12 @@ router.post('/login', async (req, res) => {
   const { email, password } = req.body;
   try {
     const user = await User.findOne({ email });
-    if (!user) return res.status(400).json({ msg: 'Invalid credentials' });
+    if (!user) return res.status(400).json({ msg: 'Email does not exist' });
 
     const isMatch = await bcrypt.compare(password, user.password);
-    if (!isMatch) return res.status(400).json({ msg: 'Invalid credentials' });
+    if (!isMatch) return res.status(400).json({ msg: 'Wrong password' });
 
-    const payload = { user: { id: user.id, role: user.role } };
+    const payload = { user: { id: user.id, name: user.name, role: user.role } };
     jwt.sign(payload, process.env.JWT_SECRET || 'secret', { expiresIn: 3600 }, (err, token) => {
       if (err) throw err;
       res.json({ token });

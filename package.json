@@ -1,0 +1,20 @@
+{
+  "name": "lets-train",
+  "version": "1.0.0",
+  "description": "A full-stack gym trainer-client platform",
+  "private": true,
+  "workspaces": [
+    "frontend",
+    "backend"
+  ],
+  "scripts": {
+    "start": "concurrently \"npm start --workspace=frontend\" \"npm start --workspace=backend\"",
+    "start:frontend": "npm start --workspace=frontend",
+    "start:backend": "npm start --workspace=backend",
+    "dev": "concurrently \"npm run dev --workspace=frontend\" \"npm run dev --workspace=backend\"",
+    "install:all": "npm install"
+  },
+  "devDependencies": {
+    "concurrently": "^9.1.0"
+  }
+}

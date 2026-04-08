@@ -1,65 +1,70 @@
-# LetsTrain
+# Getting Started with Create React App
 
-A full-stack web application connecting gym trainers to clients in Lebanon.
+This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
 
-## Features
+## Available Scripts
 
-- User authentication (clients and trainers)
-- Trainer profiles with portfolios, reviews, locations
-- Client goal posting
-- Session booking
-- Real-time chat
-- Payment processing with commission
-- Ranking system for trainers
+In the project directory, you can run:
 
-## Tech Stack
+### `npm start`
 
-- Frontend: React.js with React Router, Axios, Socket.io-client
-- Backend: Node.js, Express, MongoDB, Socket.io
-- Authentication: JWT
-- Real-time: Socket.io
+Runs the app in the development mode.\
+Open [http://localhost:3000](http://localhost:3000) to view it in your browser.
 
-## Setup
+The page will reload when you make changes.\
+You may also see any lint errors in the console.
 
-### Prerequisites
+### `npm test`
 
-- Node.js
-- MongoDB
-- npm
+Launches the test runner in the interactive watch mode.\
+See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
 
-### Backend
+### `npm run build`
 
-1. cd backend
-2. npm install
-3. Create .env file with MONGO_URI and JWT_SECRET
-4. npm run dev (for development)
+Builds the app for production to the `build` folder.\
+It correctly bundles React in production mode and optimizes the build for the best performance.
 
-### Frontend
+The build is minified and the filenames include the hashes.\
+Your app is ready to be deployed!
 
-1. cd frontend
-2. npm install
-3. npm start
+See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
 
-### Running
+### `npm run eject`
 
-Start MongoDB, then backend, then frontend.
+**Note: this is a one-way operation. Once you `eject`, you can't go back!**
 
-Access at http://localhost:3000
+If you aren't satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
 
-## API Endpoints
+Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you're on your own.
 
-- POST /api/auth/register
-- POST /api/auth/login
-- GET /api/trainers
-- GET /api/trainers/:id
-- POST /api/trainers (create profile)
-- GET /api/clients/goals
-- POST /api/clients/goals
-- GET /api/bookings
-- POST /api/bookings
-- PUT /api/bookings/:id
-- POST /api/payments
+You don't have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn't feel obligated to use this feature. However we understand that this tool wouldn't be useful if you couldn't customize it when you are ready for it.
 
-## Chat
+## Learn More
 
-Real-time chat per booking using Socket.io.
+You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
+
+To learn React, check out the [React documentation](https://reactjs.org/).
+
+### Code Splitting
+
+This section has moved here: [https://facebook.github.io/create-react-app/docs/code-splitting](https://facebook.github.io/create-react-app/docs/code-splitting)
+
+### Analyzing the Bundle Size
+
+This section has moved here: [https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size](https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size)
+
+### Making a Progressive Web App
+
+This section has moved here: [https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app](https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app)
+
+### Advanced Configuration
+
+This section has moved here: [https://facebook.github.io/create-react-app/docs/advanced-configuration](https://facebook.github.io/create-react-app/docs/advanced-configuration)
+
+### Deployment
+
+This section has moved here: [https://facebook.github.io/create-react-app/docs/deployment](https://facebook.github.io/create-react-app/docs/deployment)
+
+### `npm run build` fails to minify
+
+This section has moved here: [https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify](https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify)

@@ -31,7 +31,21 @@ router.get('/profile/me', auth, async (req, res) => {
 router.get('/:id', async (req, res) => {
   try {
     const trainer = await Trainer.findById(req.params.id).populate('user');
-    const reviews = await Review.find({ trainer: req.params.id }).populate('client', 'name');
+    const reviews = await Review.find({ trainer: req.params.id }).populate('client', 'name email profilePicture');
+    
+    console.log('=== TRAINER PROFILE FETCH ===');
+    console.log('Trainer ID:', req.params.id);
+    console.log('Review count:', reviews.length);
+    reviews.forEach((r, idx) => {
+      console.log(`Review ${idx}:`, {
+        _id: r._id,
+        rating: r.rating,
+        clientId: r.client?._id,
+        clientName: r.client?.name,
+        clientEmail: r.client?.email
+      });
+    });
+    
     res.json({ trainer, reviews });
   } catch (err) {
     res.status(500).json({ msg: 'Server error' });
@@ -62,7 +76,26 @@ router.post('/', auth, async (req, res) => {
 // Submit a review for a trainer (metrics optional)
 router.post('/:id/reviews', auth, async (req, res) => {
   const { rating, comment, metrics } = req.body;
+  
+  console.log('=== REVIEW SUBMISSION ===');
+  console.log('Trainer ID:', req.params.id);
+  console.log('Client ID:', req.user.id);
+  console.log('Rating:', rating);
+  console.log('Comment:', comment);
+  console.log('Metrics:', metrics);
+  
   try {
+    // Check if user already reviewed this trainer
+    const existingReview = await Review.findOne({
+      trainer: req.params.id,
+      client: req.user.id
+    });
+    
+    if (existingReview) {
+      console.log('ERROR: User already reviewed this trainer');
+      return res.status(400).json({ msg: 'You have already submitted a review for this trainer. You can only review once.' });
+    }
+    
     const review = new Review({
       trainer: req.params.id,
       client: req.user.id,
@@ -71,10 +104,16 @@ router.post('/:id/reviews', auth, async (req, res) => {
       metrics,
       createdAt: new Date()
     });
+    
+    console.log('Saving review...');
     await review.save();
+    console.log('Review saved successfully:', review._id);
+    
     res.status(201).json(review);
   } catch (err) {
-    res.status(500).json({ msg: 'Server error' });
+    console.error('Review save error:', err.message);
+    console.error('Full error:', err);
+    res.status(500).json({ msg: 'Server error', error: err.message });
   }
 });
 
