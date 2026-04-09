@@ -216,281 +216,562 @@ const TrainerProfile = () => {
 	return (
 		<>
 			<Header />
-			<Container maxWidth="xl" sx={{ mt: 10, mb: 6 }}>
-			<Paper elevation={3} sx={{ p: { xs: 2, md: 4 }, borderRadius: 4 }}>
-				<Grid container spacing={3} alignItems="flex-start" sx={{ display: 'flex', width: '100%' }}>
-					{/* LEFT COLUMN */}
-					<Grid item xs={12} sm={4} md={3} lg={3} sx={{ display: 'flex', flexDirection: 'column', alignItems: 'center', alignSelf: 'flex-start', borderRight: { md: '1px solid #eee' }, pr: { md: 3 }, flexShrink: 0 }}>
-						<Card elevation={0} sx={{ width: '100%', maxWidth: 350, p: 3, borderRadius: 4, boxShadow: '0 4px 24px rgba(229,57,53,0.08)', border: '2px solid #e53935' }}>
-							<Box sx={{ display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
-								<Avatar src={profilePicture} sx={{ width: 120, height: 120, mb: 2, border: '4px solid #e53935' }} />
-								<Typography variant="h5" sx={{ fontWeight: 700, mb: 0.5 }}>{name}</Typography>
-								<Typography variant="body1" sx={{ color: '#888', mb: 1.5 }}><LocationOnIcon sx={{ fontSize: 18, verticalAlign: 'middle', mr: 0.5 }} />{location}</Typography>
-								<Box sx={{ display: 'flex', alignItems: 'center', mb: 2 }}>
+			<Box sx={{ background: 'linear-gradient(135deg, #f8f9fa 0%, #f3f4f6 100%)', minHeight: '100vh', py: 4 }}>
+				<Container maxWidth="xl">
+
+					{/* ===== HERO SECTION: 3-COLUMN LAYOUT ===== */}
+					<Box 
+						sx={{ 
+							mb: 6,
+							p: { xs: 4, sm: 5 },
+							background: '#fff',
+							borderRadius: 3,
+							boxShadow: '0 2px 8px rgba(0, 0, 0, 0.1)',
+							border: '1px solid #f0f0f0'
+						}}
+					>
+						<Grid container spacing={{ xs: 2.5, sm: 3 }} alignItems="center">
+							{/* LEFT: Avatar + Basic Info */}
+					<Grid item xs={12} sm="auto" sx={{ display: 'flex', gap: { xs: 2, sm: 2.5 }, alignItems: { xs: 'center', sm: 'flex-start' } }}>
+						<Avatar 
+							src={profilePicture} 
+							sx={{ 
+								width: 80, 
+								height: 80,
+								boxShadow: '0 2px 8px rgba(0, 0, 0, 0.12)',
+								flexShrink: 0
+							}} 
+						/>
+						<Box sx={{ textAlign: { xs: 'center', sm: 'left' }, minWidth: 0 }}>
+							<Typography variant="h5" sx={{ fontWeight: 700, mb: 0.75, fontSize: { xs: 20, sm: 24 }, color: '#1a1a1a' }}>
+								{name}
+							</Typography>
+							<Box sx={{ display: 'flex', alignItems: 'center', gap: 0.5, mb: 1 }}>
+								<LocationOnIcon sx={{ fontSize: 14, color: '#999' }} />
+								<Typography variant="caption" sx={{ color: '#666', fontSize: 13 }}>{location}</Typography>
+							</Box>
+							{/* Rating Stars */}
+							<Box sx={{ display: 'flex', alignItems: 'center', gap: 0.75 }}>
+								<Box sx={{ display: 'flex', gap: 0.1 }}>
 									{[...Array(5)].map((_, i) => {
 										const avgRating = reviews.length > 0 ? (reviews.reduce((sum, r) => sum + r.rating, 0) / reviews.length) : 0;
-										return <StarIcon key={i} sx={{ color: i < Math.round(avgRating) ? '#ffc107' : '#ccc', fontSize: 22 }} />;
+										return <StarIcon key={i} sx={{ color: i < Math.round(avgRating) ? '#ffc107' : '#e0e0e0', fontSize: 14 }} />;
 									})}
-									<Typography variant="body2" sx={{ ml: 1, color: '#888' }}>
-										{reviews.length > 0 ? (reviews.reduce((sum, r) => sum + r.rating, 0) / reviews.length).toFixed(1) : 0.0} ({reviews.length} reviews)
+								</Box>
+								<Typography variant="body2" sx={{ fontWeight: 600, color: '#333', fontSize: 13 }}>
+									{reviews.length > 0 ? (reviews.reduce((sum, r) => sum + r.rating, 0) / reviews.length).toFixed(1) : 'N/A'}
+								</Typography>
+								<Typography variant="caption" sx={{ color: '#999', fontSize: 12 }}>
+									({reviews.length})
+								</Typography>
+						</Box>
+					</Box>
+				</Grid>
+
+				{/* CENTER: Stats Grid */}
+					<Grid item xs={12} sm="auto">
+								<Box sx={{ display: 'grid', gridTemplateColumns: 'repeat(3, 1fr)', gap: 0, textAlign: 'center' }}>
+									<Box sx={{ px: 2, py: 1, borderRight: '1px solid #f0f0f0', '&:last-child': { borderRight: 'none' } }}>
+										<Typography variant="h6" sx={{ fontWeight: 700, color: '#e53935', mb: 0.5, fontSize: 20 }}>{clientsTrained}</Typography>
+										<Typography variant="caption" sx={{ color: '#999', fontSize: 11, fontWeight: 500 }}>Clients</Typography>
+									</Box>
+									<Box sx={{ px: 2, py: 1, borderRight: '1px solid #f0f0f0' }}>
+										<Typography variant="h6" sx={{ fontWeight: 700, color: '#e53935', mb: 0.5, fontSize: 20 }}>{sessionsCompleted}</Typography>
+										<Typography variant="caption" sx={{ color: '#999', fontSize: 11, fontWeight: 500 }}>Sessions</Typography>
+									</Box>
+									<Box sx={{ px: 2, py: 1 }}>
+										<Typography variant="h6" sx={{ fontWeight: 700, color: '#e53935', mb: 0.5, fontSize: 20 }}>{experience}</Typography>
+										<Typography variant="caption" sx={{ color: '#999', fontSize: 11, fontWeight: 500 }}>Yrs</Typography>
+            </Box>
+        </Box>				</Grid>
+
+				{/* RIGHT: Price + Actions */}							<Grid item xs={12} sm="auto">
+								<Box sx={{ display: 'flex', flexDirection: 'column', alignItems: { xs: 'stretch', sm: 'flex-end' }, gap: 1.5 }}>
+									<Box sx={{ textAlign: { xs: 'center', sm: 'right' } }}>
+										<Typography variant="h6" sx={{ fontWeight: 700, color: '#1a1a1a', mb: 0 }}>$</Typography>
+										<Typography variant="h6" sx={{ fontWeight: 700, color: '#1a1a1a', fontSize: 22, mb: 0.25 }}>
+											{price}
+										</Typography>
+										<Typography variant="caption" sx={{ color: '#999', fontSize: 12 }}>per session</Typography>
+									</Box>
+									<Box sx={{ display: 'flex', gap: 1, flexDirection: { xs: 'column', sm: 'row' } }}>
+										<Button 
+											variant="contained" 
+											onClick={handleBookSession}
+											sx={{ 
+												py: 1,
+												px: 2.5,
+												fontWeight: 600,
+												fontSize: 13,
+												borderRadius: 2,
+												background: '#e53935',
+												color: '#fff',
+												boxShadow: '0 2px 6px rgba(229, 57, 53, 0.2)',
+												flexGrow: 1,
+												'&:hover': { 
+													background: '#c62828',
+													boxShadow: '0 3px 10px rgba(229, 57, 53, 0.25)'
+												}
+											}}
+										>
+											Book
+										</Button>
+										<Button 
+											variant="outlined" 
+											onClick={handleMessageClick}
+											disabled={messageLoading}
+											startIcon={messageLoading ? <CircularProgress size={14} sx={{ color: '#e53935' }} /> : <MessageIcon sx={{ fontSize: 18 }} />}
+											sx={{ 
+												py: 1,
+												px: 2.5,
+												fontWeight: 600,
+												fontSize: 13,
+												borderRadius: 2,
+												color: '#e53935',
+												borderColor: '#e53935',
+												flexGrow: 1,
+												'&:hover': { 
+													background: 'rgba(229, 57, 53, 0.05)',
+													borderColor: '#c62828',
+													color: '#c62828'
+												}
+											}}
+										>
+											{messageLoading ? 'Starting...' : 'Message'}
+										</Button>
+									</Box>
+								</Box>
+							</Grid>
+						</Grid>
+					</Box>
+
+					{/* ===== CONTENT SECTIONS ===== */}
+					<Grid container spacing={3}>
+					{/* LEFT: About + Specialties + Certifications */}
+					<Grid item xs={12} md={8}>
+						<Grid container spacing={3}>
+							{/* About */}
+							<Grid item xs={12}>
+								<Box 
+									sx={{ 
+										p: 3,
+										background: '#fff',
+										borderRadius: 2,
+										boxShadow: '0 1px 4px rgba(0, 0, 0, 0.09)',
+										border: '1px solid #f5f5f5',
+										transition: 'all 0.3s ease',
+										'&:hover': {
+											boxShadow: '0 2px 8px rgba(0, 0, 0, 0.1)',
+											borderColor: '#f0f0f0'
+										}
+									}}
+								>
+									<Box sx={{ display: 'flex', alignItems: 'center', gap: 1, mb: 2 }}>
+										<Box sx={{ width: 4, height: 24, background: '#e53935', borderRadius: 1 }} />
+										<Typography variant="h6" sx={{ fontWeight: 700, fontSize: 16, color: '#1a1a1a', m: 0 }}>About</Typography>
+									</Box>
+									<Typography variant="body2" sx={{ color: '#555', lineHeight: 1.8, fontSize: 13 }}>
+										{bio || 'No bio provided.'}
 									</Typography>
 								</Box>
-								<Chip label={`Experience: ${experience} years`} size="small" sx={{ mb: 1.5, background: '#ffeaea', color: '#e53935', fontWeight: 500 }} />
-								<Chip label={`$${price}/session`} size="small" sx={{ mb: 3, background: '#ffeaea', color: '#e53935', fontWeight: 700, fontSize: 16 }} />
-								<Stack direction="row" spacing={2} sx={{ mb: 3, width: '100%', justifyContent: 'center' }}>
-									<Box sx={{ display: 'flex', alignItems: 'center', gap: 0.5 }}><GroupIcon sx={{ color: '#e53935' }} /> <Typography variant="body2">{clientsTrained} clients</Typography></Box>
-									<Box sx={{ display: 'flex', alignItems: 'center', gap: 0.5 }}><AssignmentIcon sx={{ color: '#e53935' }} /> <Typography variant="body2">{sessionsCompleted} sessions</Typography></Box>
-									<Box sx={{ display: 'flex', alignItems: 'center', gap: 0.5 }}><DescriptionIcon sx={{ color: '#e53935' }} /> <Typography variant="body2">{certificates.length} certificates</Typography></Box>
-								</Stack>
-																<Button
-																	variant="contained"
-																	sx={{ mb: 2, fontWeight: 700, fontSize: 18, borderRadius: 2, background: '#e53935', color: '#fff', '&:hover': { background: '#b71c1c' }, '&:disabled': { background: '#ccc' } }}
-																	fullWidth
-																	startIcon={messageLoading ? <CircularProgress size={24} /> : <MessageIcon />}
-																	onClick={handleMessageClick}
-																	disabled={messageLoading}
-																>
-																	{messageLoading ? 'Starting Chat...' : 'Message Trainer'}
-																</Button>
-																{/* Login Prompt Dialog */}
-																<Dialog open={loginPromptOpen} onClose={handleLoginPromptClose} PaperProps={{ sx: { borderRadius: 4, p: 0, minWidth: 320, maxWidth: 400, boxShadow: 8 } }}>
-																	<DialogTitle sx={{ background: '#ffeaea', borderTopLeftRadius: 16, borderTopRightRadius: 16, color: '#e53935', fontWeight: 700 }}>Please log in to message this trainer</DialogTitle>
-																	<DialogActions sx={{ px: 3, pb: 2, background: '#fff', borderBottomLeftRadius: 16, borderBottomRightRadius: 16 }}>
-																		<Button onClick={handleLoginPromptClose} sx={{ color: '#888', fontWeight: 500, borderRadius: 2 }}>Cancel</Button>
-																		<Button onClick={handleLoginRedirect} variant="contained" sx={{ background: '#e53935', color: '#fff', fontWeight: 700, borderRadius: 2 }}>Login</Button>
-																	</DialogActions>
-																</Dialog>
-								<Button variant="outlined" onClick={handleBookSession} sx={{ fontWeight: 700, fontSize: 18, borderRadius: 2, color: '#e53935', borderColor: '#e53935', '&:hover': { borderColor: '#b71c1c', color: '#b71c1c' } }} fullWidth>
-									Book a Session
-								</Button>
-							</Box>
-						</Card>
-					</Grid>
-					
-					{/* RIGHT COLUMN */}
-					<Grid item xs={12} sm={8} md={9} lg={9} sx={{ pt: 0, display: 'flex', flexDirection: 'column', alignSelf: 'flex-start', flexGrow: 1 }}>
-						{/* About Section */}
-						<Paper elevation={0} sx={{ p: 3, mb: { xs: 2.5, sm: 3 }, background: '#fafbfc', borderRadius: 3, border: '1px solid #eee' }}>
-							<Typography variant="h6" sx={{ fontWeight: 700, mb: 2 }}>About</Typography>
-							<Typography variant="body1" sx={{ color: '#444' }}>{bio || 'No bio provided.'}</Typography>
-						</Paper>
-						{/* Specialties */}
-						<Paper elevation={0} sx={{ p: 3, mb: { xs: 2.5, sm: 3 }, background: '#fafbfc', borderRadius: 3, border: '1px solid #eee' }}>
-							<Typography variant="h6" sx={{ fontWeight: 700, mb: 2 }}>Specialties</Typography>
-							{specialties.length > 0 ? (
-								<Box sx={{ display: 'flex', flexWrap: 'wrap', gap: 1 }}>
-									{specialties.map((spec, i) => (
-										<Chip key={i} label={spec} sx={{ background: '#ffeaea', color: '#e53935', fontWeight: 500, fontSize: 15 }} />
-									))}
-								</Box>
-							) : (
-								<Typography color="text.secondary" sx={{ fontSize: 15 }}>No specialties listed.</Typography>
-							)}
-						</Paper>
-						{/* Certificates */}
-						<Paper elevation={0} sx={{ p: 3, mb: { xs: 2.5, sm: 3 }, background: '#fafbfc', borderRadius: 3, border: '1px solid #eee' }}>
-							<Typography variant="h6" sx={{ fontWeight: 700, mb: 2 }}>Certificates</Typography>
-							{certificates.length > 0 ? (
-								<Stack spacing={1.5}>
-									{certificates.map((cert, i) => (
-										<Paper key={i} elevation={0} sx={{ p: 1.5, display: 'flex', alignItems: 'center', borderRadius: 2, background: '#ffeaea', border: '1px solid #ffcdd2', width: 'fit-content' }}>
-											<DescriptionIcon sx={{ color: '#e53935', mr: 1 }} />
-											<Typography>{cert}</Typography>
-										</Paper>
-									))}
-								</Stack>
-							) : (
-								<Typography color="text.secondary" sx={{ fontSize: 15 }}>No certificates listed.</Typography>
-							)}
-						</Paper>
-						{/* Metrics Section */}
-						<Paper elevation={0} sx={{ p: 3, mb: { xs: 2.5, sm: 3 }, background: '#fafbfc', borderRadius: 3, border: '1px solid #eee' }}>
-							<Typography variant="h6" sx={{ fontWeight: 700, mb: 2.5 }}>Current Metrics</Typography>
-							<Stack spacing={2}>
-								{metricLabels.map(m => (
-									<Box key={m.key} sx={{ display: 'flex', alignItems: 'center', gap: 2 }}>
-										<StarIcon sx={{ color: '#e53935', fontSize: 22 }} />
-										<Typography sx={{ minWidth: 120, fontWeight: 500 }}>{m.label}</Typography>
-										<Box sx={{ flex: 1 }}>
-											<LinearProgress variant="determinate" value={Number(averageMetrics[m.key] || 0) * 20} sx={{ height: 10, borderRadius: 5, background: '#ffeaea', '& .MuiLinearProgress-bar': { background: '#e53935' } }} />
-										</Box>
-										<Typography sx={{ minWidth: 40, textAlign: 'right', fontWeight: 700 }}>{averageMetrics[m.key] || 0.0}</Typography>
-									</Box>
-								))}
-							</Stack>
-						</Paper>
-						{/* Reviews Section */}
-						<Box sx={{ mb: { xs: 2.5, sm: 3 } }}>
-							<Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', mb: 2.5 }}>
-								<Typography variant="h6" sx={{ fontWeight: 700 }}>Reviews</Typography>
-								<Button variant="outlined" sx={{ color: '#e53935', borderColor: '#e53935', '&:hover': { borderColor: '#b71c1c', color: '#b71c1c' } }} onClick={handleAddReview}>Add Review</Button>
-							</Box>
-							{reviews.length === 0 && !showAddReview && (
-								<Paper elevation={0} sx={{ p: 3, textAlign: 'center', background: '#ffeaea', borderRadius: 3, border: '1px solid #ffcdd2' }}>
-									<Typography variant="body1" sx={{ mb: 2, color: '#e53935' }}>No reviews yet. Be the first to review this trainer!</Typography>
-									<Button variant="contained" sx={{ background: '#e53935', color: '#fff', '&:hover': { background: '#b71c1c' } }} onClick={handleAddReview}>Add Review</Button>
-								</Paper>
-							)}
-							{showAddReview && (
-								<Paper elevation={0} sx={{ p: 3, mb: 2.5, borderRadius: 3, background: '#fff', border: '1px solid #eee' }}>
-									<form onSubmit={handleReviewSubmit}>
-										<Stack spacing={2}>
-											{/* Overall Rating */}
-											<Box sx={{ mb: 1 }}>
-												<Typography variant="subtitle1" sx={{ fontWeight: 600, mb: 0.5 }}>
-													Overall Rating <span style={{ color: '#e53935' }}>*</span>
-												</Typography>
-												<Rating
-													name="overall"
-													value={overallRating || 0}
-													size="large"
-													onChange={(_, value) => handleOverallChange(value)}
-													onChangeActive={(_, value) => setHover(prev => ({ ...prev, overall: value }))}
-												/>
-												<Typography variant="body2" sx={{ color: 'text.secondary', fontWeight: 500, mt: 0.5 }}>
-													{hover.overall !== -1
-														? ratingLabels[hover.overall]
-														: overallRating
-															? ratingLabels[overallRating]
-															: ''}
-												</Typography>
-											</Box>
-											{/* Comment */}
-											<TextField label="Comment" multiline minRows={2} value={reviewText} onChange={e => setReviewText(e.target.value)} fullWidth />
-											{/* Email (optional or hidden if logged in) */}
-											{(!window.localStorage.getItem('user')) && (
-												<TextField label="Email (optional)" value={reviewEmail} onChange={e => setReviewEmail(e.target.value)} fullWidth />
-											)}
-											{/* Required Metrics */}
-											<Divider sx={{ mb: 1 }} />
-											<Box sx={{ pl: 1, mb: 2 }}>
-												<Typography variant="subtitle2" sx={{ fontWeight: 600, mb: 1 }}>
-													Optional: Rate specific areas
-												</Typography>
-												{metricLabels.map(m => (
-													<Box key={m.key} sx={{ display: 'flex', alignItems: 'center', mb: 2, gap: 2 }}>
-														<Typography variant="body2" sx={{ fontWeight: 500, minWidth: 110 }}>
-															{m.label}
-														</Typography>
-														<Rating
-															name={m.key}
-															value={reviewMetrics[m.key] || 0}
-															size="large"
-															onChange={(_, value) => handleReviewChange(m.key, value)}
-															onChangeActive={(_, value) => setHover(prev => ({ ...prev, [m.key]: value }))}
-															sx={{ mr: 2 }}
-														/>
-														<Box sx={{ minWidth: 60 }}>
-															<Typography variant="body2" sx={{ color: 'text.secondary', fontWeight: 500 }}>
-																{hover[m.key] !== -1
-																	? ratingLabels[hover[m.key]]
-																	: reviewMetrics[m.key]
-																		? ratingLabels[reviewMetrics[m.key]]
-																		: ''}
-															</Typography>
-														</Box>
-														<Typography variant="body2" sx={{ color: 'text.secondary', fontWeight: 500 }}>
-															{reviewMetrics[m.key] || 0}
-														</Typography>
-													</Box>
+							</Grid>
+
+							{/* Specialties + Certifications: Side by Side */}
+							<Grid item xs={12}>
+								<Grid container spacing={2.5}>
+								{/* Specialties */}
+								{specialties.length > 0 && (
+									<Grid item xs={12} sm={6}>
+										<Box 
+											sx={{ 
+												p: 3,
+												background: '#fff',
+												borderRadius: 2,
+												boxShadow: '0 1px 3px rgba(0, 0, 0, 0.08)',
+												height: '100%'
+											}}
+										>
+												<Box sx={{ display: 'flex', alignItems: 'center', gap: 1, mb: 2 }}>
+													<Box sx={{ width: 4, height: 24, background: '#e53935', borderRadius: 1 }} />
+													<Typography variant="h6" sx={{ fontWeight: 700, fontSize: 16, color: '#1a1a1a', m: 0 }}>Specialties</Typography>
+												</Box>
+										<Box sx={{ display: 'flex', flexWrap: 'wrap', gap: 0.75 }}>
+											{specialties.map((spec, i) => (
+												<Chip 
+													key={i} 
+													label={spec} 
+													sx={{ 
+														fontSize: 12,
+														height: 26,
+															background: '#f0f0f0',
+															color: '#333',
+															fontWeight: 500,
+															'&:hover': { background: '#e8e8e8' }
+														}} 
+													/>
 												))}
 											</Box>
-											<Button type="submit" variant="contained" sx={{ background: '#e53935', color: '#fff', '&:hover': { background: '#b71c1c' } }}>Submit Review</Button>
-										</Stack>
-									</form>
-								</Paper>
-							)}
-							{/* Review Cards */}
-							{reviews.length > 0 && (
-								<Stack spacing={2}>
-									{reviews.map((review, idx) => (
-										<Paper key={idx} elevation={0} sx={{ p: 2.5, borderRadius: 3, background: '#fff', border: '1px solid #eee' }}>
-											<Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', mb: 1 }}>
-												<Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
-													<Avatar src={review.client?.profilePicture} alt={review.client?.name} sx={{ width: 36, height: 36 }} />
-													<Box>
-														<Typography variant="subtitle2" sx={{ fontWeight: 600 }}>{review.client?.name || 'User'}</Typography>
-														<Typography variant="caption" sx={{ color: '#888' }}>{new Date(review.createdAt).toLocaleDateString()}</Typography>
-													</Box>
-												</Box>
-												<Box sx={{ display: 'flex', alignItems: 'center' }}>
-													{[...Array(5)].map((_, i) => (
-														<StarIcon key={i} sx={{ color: i < review.rating ? '#ffc107' : '#ccc', fontSize: 18 }} />
-													))}
-													<Typography variant="body2" sx={{ ml: 1, fontWeight: 600 }}>{review.rating}/5</Typography>
-												</Box>
-											</Box>
-											<Typography variant="body2" sx={{ mb: 1.5, color: '#333' }}>{review.comment}</Typography>
-											{review.metrics && Object.values(review.metrics).some(v => v > 0) && (
-												<Box sx={{ display: 'flex', gap: 3, flexWrap: 'wrap' }}>
-													{metricLabels.map(m => 
-														review.metrics?.[m.key] > 0 ? (
-															<Box key={m.key} sx={{ display: 'flex', alignItems: 'center', gap: 0.5 }}>
-																<Typography variant="caption" sx={{ fontWeight: 500, color: '#666' }}>{m.label}:</Typography>
-																<Box sx={{ display: 'flex' }}>
-																	{[...Array(5)].map((_, i) => (
-																		<StarIcon key={i} sx={{ color: i < review.metrics[m.key] ? '#e53935' : '#ccc', fontSize: 14 }} />
-																	))}
-																</Box>
+										</Box>
+									</Grid>
+								)}
+
+								{/* Certifications */}
+								{certificates.length > 0 && (
+									<Grid item xs={12} sm={specialties.length > 0 ? 6 : 12}>
+										<Box 
+											sx={{ 
+												p: 3,
+												background: '#fff',
+												borderRadius: 2,
+												boxShadow: '0 1px 3px rgba(0, 0, 0, 0.08)',
+												height: '100%'
+											}}
+										>
+															<Box sx={{ display: 'flex', alignItems: 'center', gap: 1, mb: 2 }}>
+																<Box sx={{ width: 4, height: 24, background: '#e53935', borderRadius: 1 }} />
+																<Typography variant="h6" sx={{ fontWeight: 700, fontSize: 16, color: '#1a1a1a', m: 0 }}>Certifications</Typography>
 															</Box>
-														) : null
-													)}
-												</Box>
-											)}
-										</Paper>
-									))}
-								</Stack>
-							)}
-						</Box>
+											<Stack spacing={1}>
+												{certificates.map((cert, i) => (
+													<Box 
+														key={i}
+														sx={{ 
+															p: 1.25,
+															display: 'flex',
+															alignItems: 'center',
+															background: '#f8f9fa',
+															borderRadius: 1.5,
+															border: '1px solid #eee'
+														}}
+													>
+														<Box sx={{ color: '#e53935', mr: 1, fontWeight: 700, fontSize: 14 }}>✓</Box>
+														<Typography variant="body2" sx={{ fontWeight: 500, color: '#333', fontSize: 13 }}>{cert}</Typography>
+													</Box>
+												))}
+											</Stack>
+										</Box>
+									</Grid>
+								)}
+							</Grid>
+						</Grid>
 					</Grid>
 				</Grid>
-			</Paper>
+
+				{/* RIGHT: Client Ratings Metrics */}
+					{Object.values(averageMetrics).some(v => v > 0) && (
+						<Grid item xs={12} md={4}>
+							<Box 
+								sx={{ 
+									p: 3,
+									background: '#fff',
+									borderRadius: 2,
+									boxShadow: '0 1px 3px rgba(0, 0, 0, 0.08)'
+								}}
+							>
+								<Box sx={{ display: 'flex', alignItems: 'center', gap: 1, mb: 2.5 }}>
+									<Box sx={{ width: 4, height: 24, background: '#e53935', borderRadius: 1 }} />
+									<Typography variant="h6" sx={{ fontWeight: 700, fontSize: 16, color: '#1a1a1a', m: 0 }}>Client Ratings</Typography>
+								</Box>
+								<Stack spacing={2}>
+									{metricLabels.map(m => (
+										<Box key={m.key}>
+											<Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', mb: 0.75 }}>
+												<Typography variant="body2" sx={{ fontWeight: 500, color: '#666', fontSize: 12 }}>{m.label}</Typography>
+												<Typography variant="body2" sx={{ fontWeight: 700, color: '#1a1a1a', fontSize: 13 }}>
+													{(Number(averageMetrics[m.key] || 0)).toFixed(1)}/5
+												</Typography>
+											</Box>
+											<Box sx={{ height: 5, background: '#e8e8e8', borderRadius: 10, overflow: 'hidden' }}>
+												<Box 
+													sx={{ 
+														height: '100%',
+														background: '#e53935',
+														width: `${(Number(averageMetrics[m.key] || 0) / 5) * 100}%`,
+														transition: 'width 0.4s ease',
+														borderRadius: 10
+													}} 
+												/>
+											</Box>
+										</Box>
+									))}
+								</Stack>
+							</Box>
+						</Grid>
+					)}
+
+					{/* Reviews Section - Full Width */}
+					<Grid item xs={12}>
+							<Box 
+								sx={{ 
+									p: 3,
+									background: '#fff',
+									borderRadius: 2,
+									boxShadow: '0 1px 4px rgba(0, 0, 0, 0.09)',
+									border: '1px solid #f5f5f5'
+								}}
+							>
+								<Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', mb: 3 }}>
+									<Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
+										<Box sx={{ width: 4, height: 24, background: '#e53935', borderRadius: 1 }} />
+										<Typography variant="h6" sx={{ fontWeight: 700, fontSize: 16, color: '#1a1a1a', m: 0 }}>
+											Reviews {reviews.length > 0 && `(${reviews.length})`}
+										</Typography>
+									</Box>
+									{!showAddReview && (
+										<Button 
+											variant="contained"
+											onClick={handleAddReview}
+											sx={{ 
+												background: '#e53935',
+												color: '#fff',
+												fontWeight: 600,
+												fontSize: 13,
+												borderRadius: 2,
+												px: 2,
+												py: 0.75,
+												'&:hover': { background: '#c62828' }
+											}}
+										>
+											Leave Review
+										</Button>
+									)}
+								</Box>
+
+								{reviews.length === 0 && !showAddReview && (
+									<Box sx={{ textAlign: 'center', py: 4 }}>
+										<Typography variant="body2" sx={{ color: '#999', mb: 2 }}>
+											No reviews yet. Be the first to share your experience!
+										</Typography>
+										<Button 
+											variant="contained"
+											onClick={handleAddReview}
+											sx={{ 
+												background: '#e53935',
+												color: '#fff',
+												fontWeight: 600,
+												'&:hover': { background: '#c62828' }
+											}}
+										>
+											Write a Review
+										</Button>
+									</Box>
+								)}
+
+								{showAddReview && (
+									<Box sx={{ mb: 3, p: 3, background: '#f8f9fa', borderRadius: 2, border: '1px solid #eee' }}>
+										<form onSubmit={handleReviewSubmit}>
+											<Stack spacing={2}>
+												<Box>
+													<Typography variant="body2" sx={{ fontWeight: 600, mb: 1, color: '#1a1a1a' }}>
+														Overall Rating <span style={{ color: '#e53935' }}>*</span>
+													</Typography>
+													<Rating
+														value={overallRating || 0}
+														size="large"
+														onChange={(_, value) => handleOverallChange(value)}
+													/>
+												</Box>
+												<TextField 
+													label="Your feedback" 
+													multiline 
+													rows={3}
+													value={reviewText} 
+													onChange={e => setReviewText(e.target.value)}
+													fullWidth
+													variant="outlined"
+													sx={{
+														'& .MuiOutlinedInput-root': {
+															borderRadius: 1.5,
+															fontSize: 14
+														}
+													}}
+												/>
+												<Box>
+													<Typography variant="body2" sx={{ fontWeight: 600, mb: 1.5, color: '#1a1a1a' }}>Rate specific areas (optional)</Typography>
+													<Grid container spacing={2}>
+														{metricLabels.map(m => (
+															<Grid item xs={6} sm={3} key={m.key}>
+																<Box>
+																	<Typography variant="caption" sx={{ fontWeight: 500, color: '#666', display: 'block', mb: 1 }}>{m.label}</Typography>
+																	<Rating
+																		name={m.key}
+																		value={reviewMetrics[m.key] || 0}
+																		onChange={(_, value) => handleReviewChange(m.key, value)}
+																		size="small"
+																	/>
+																</Box>
+															</Grid>
+														))}
+													</Grid>
+												</Box>
+												<Button 
+													type="submit" 
+													variant="contained"
+													fullWidth
+													sx={{ 
+														background: '#e53935',
+														color: '#fff',
+														fontWeight: 600,
+														py: 1,
+														borderRadius: 2,
+														'&:hover': { background: '#c62828' }
+													}}
+												>
+													Submit Review
+												</Button>
+											</Stack>
+										</form>
+									</Box>
+								)}
+
+								{/* Review Cards */}
+								{reviews.length > 0 && (
+									<Stack spacing={2}>
+										{reviews.map((review, idx) => (
+											<Box 
+												key={idx}
+												sx={{ 
+													p: 3,
+													background: '#fff',
+													borderRadius: 2,
+													border: '1px solid #f0f0f0',
+													transition: 'all 0.3s cubic-bezier(0.4, 0, 0.2, 1)',
+													'&:hover': {
+														boxShadow: '0 4px 12px rgba(0, 0, 0, 0.12)',
+														borderColor: '#e0e0e0',
+														transform: 'translateY(-2px)'
+													}
+												}}
+											>
+												{/* Testimonial Header */}
+												<Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', mb: 1.5, gap: 2 }}>
+													<Box sx={{ display: 'flex', gap: 1.5, flex: 1 }}>
+														<Avatar 
+															src={review.client?.profilePicture} 
+															alt={review.client?.name}
+															sx={{ width: 32, height: 32 }}
+														/>
+														<Box>
+															<Typography variant="body2" sx={{ fontWeight: 600, color: '#1a1a1a' }}>
+																{review.client?.name || 'Anonymous'}
+															</Typography>
+															<Typography variant="caption" sx={{ color: '#999' }}>
+																{new Date(review.createdAt).toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' })}
+															</Typography>
+														</Box>
+													</Box>
+													<Box sx={{ display: 'flex', gap: 0.2 }}>
+														{[...Array(5)].map((_, i) => (
+															<StarIcon 
+																key={i} 
+																sx={{ 
+																	color: i < review.rating ? '#ffc107' : '#e0e0e0', 
+																	fontSize: 14 
+																}} 
+															/>
+														))}
+													</Box>
+												</Box>
+
+												{/* Comment */}
+												<Typography variant="body2" sx={{ color: '#555', lineHeight: 1.7, mb: 1.5 }}>
+													"{review.comment}"
+												</Typography>
+
+												{/* Metrics Grid (if any) */}
+												{review.metrics && Object.values(review.metrics).some(v => v > 0) && (
+													<Box sx={{ pt: 1.5, borderTop: '1px solid #e0e0e0' }}>
+														<Grid container spacing={1.5} sx={{ mt: 0 }}>
+															{metricLabels.map(m => 
+																review.metrics?.[m.key] > 0 ? (
+																	<Grid item xs={6} sm={3} key={m.key}>
+																		<Box>
+																			<Typography variant="caption" sx={{ color: '#999', fontWeight: 500, display: 'block', mb: 0.5 }}>
+																				{m.label}
+																			</Typography>
+																			<Box sx={{ display: 'flex', gap: 0.1 }}>
+																				{[...Array(5)].map((_, i) => (
+																					<StarIcon 
+																						key={i} 
+																						sx={{ 
+																							color: i < review.metrics[m.key] ? '#e53935' : '#e0e0e0', 
+																							fontSize: 10 
+																						}} 
+																					/>
+																				))}
+																			</Box>
+																		</Box>
+																	</Grid>
+																) : null
+															)}
+														</Grid>
+													</Box>
+												)}
+											</Box>
+										))}
+									</Stack>
+								)}
+							</Box>
+						</Grid>
+					</Grid>
 			</Container>
-			
+			</Box>
+			<Dialog open={loginPromptOpen} onClose={handleLoginPromptClose} PaperProps={{ sx: { borderRadius: 3, minWidth: 320, maxWidth: 400, boxShadow: '0 4px 16px rgba(0, 0, 0, 0.12)' } }}>
+				<DialogTitle sx={{ background: '#fff', color: '#1a1a1a', fontWeight: 700, fontSize: 16, pb: 1.5 }}>Please log in to message this trainer</DialogTitle>
+				<DialogContent sx={{ px: 3, py: 2.5, background: '#fff', fontSize: 14, color: '#666' }}>
+					You need to sign in to start a conversation. This only takes a few seconds!
+				</DialogContent>
+				<DialogActions sx={{ px: 3, pb: 2.5, background: '#fff', gap: 1.5 }}>
+					<Button onClick={handleLoginPromptClose} sx={{ color: '#666', fontWeight: 500, borderRadius: 2, textTransform: 'none' }}>Cancel</Button>
+					<Button onClick={handleLoginRedirect} variant="contained" sx={{ background: '#e53935', color: '#fff', fontWeight: 600, borderRadius: 2, textTransform: 'none', '&:hover': { background: '#c62828' } }}>Sign In</Button>
+				</DialogActions>
+			</Dialog>
+
 			{/* Success Dialog */}
-			<Dialog open={successDialogOpen} onClose={() => setSuccessDialogOpen(false)} PaperProps={{ sx: { borderRadius: 4, minWidth: 380, boxShadow: '0 8px 32px rgba(229,57,53,0.25)' } }}>
-				<DialogTitle sx={{ background: 'linear-gradient(135deg, #e53935 0%, #b71c1c 100%)', color: '#fff', fontWeight: 700, fontSize: 20, textAlign: 'center', pb: 2 }}>
-					✨ Review Posted Successfully!
+			<Dialog open={successDialogOpen} onClose={() => setSuccessDialogOpen(false)} PaperProps={{ sx: { borderRadius: 3, minWidth: 360, boxShadow: '0 8px 24px rgba(0, 0, 0, 0.15)' } }}>
+				<DialogTitle sx={{ background: '#fff', color: '#1a1a1a', fontWeight: 700, fontSize: 18, textAlign: 'center', pb: 1 }}>
+					✨ Review Posted!
 				</DialogTitle>
-				<DialogContent sx={{ textAlign: 'center', pt: 3, pb: 3 }}>
-					<Typography sx={{ fontSize: 16, color: '#333', mb: 1 }}>
-						Thank you for your feedback!
+				<DialogContent sx={{ textAlign: 'center', pt: 2, pb: 3, background: '#fff' }}>
+					<Typography sx={{ fontSize: 14, color: '#666', mb: 1 }}>
+						Thank you for sharing your feedback!
 					</Typography>
-					<Typography sx={{ fontSize: 14, color: '#777' }}>
-						Your review has been posted and will help other clients make informed decisions.
+					<Typography sx={{ fontSize: 13, color: '#999' }}>
+						Your review helps other clients learn about this trainer's expertise.
 					</Typography>
 				</DialogContent>
-				<DialogActions sx={{ pb: 2, px: 3, justifyContent: 'center' }}>
+				<DialogActions sx={{ pb: 2.5, px: 3, justifyContent: 'center', background: '#fff' }}>
 					<Button 
 						onClick={() => setSuccessDialogOpen(false)} 
 						variant="contained" 
-						sx={{ background: '#e53935', color: '#fff', fontWeight: 600, borderRadius: 2, px: 3, '&:hover': { background: '#b71c1c' } }}
+						sx={{ background: '#e53935', color: '#fff', fontWeight: 600, borderRadius: 2, px: 3, textTransform: 'none', '&:hover': { background: '#c62828' } }}
 					>
-						Great!
+						Awesome!
 					</Button>
 				</DialogActions>
 			</Dialog>
 
 			{/* Error Dialog */}
-			<Dialog open={errorDialogOpen} onClose={() => setErrorDialogOpen(false)} PaperProps={{ sx: { borderRadius: 4, minWidth: 380, boxShadow: '0 8px 32px rgba(229,57,53,0.25)' } }}>
-				<DialogTitle sx={{ background: 'linear-gradient(135deg, #e53935 0%, #b71c1c 100%)', color: '#fff', fontWeight: 700, fontSize: 18, textAlign: 'center', pb: 2 }}>
-					⚠️ Oops!
+			<Dialog open={errorDialogOpen} onClose={() => setErrorDialogOpen(false)} PaperProps={{ sx: { borderRadius: 3, minWidth: 360, boxShadow: '0 8px 24px rgba(0, 0, 0, 0.15)' } }}>
+				<DialogTitle sx={{ background: '#fff', color: '#1a1a1a', fontWeight: 700, fontSize: 18, textAlign: 'center', pb: 1 }}>
+					⚠️ Something went wrong
 				</DialogTitle>
-				<DialogContent sx={{ textAlign: 'center', pt: 3, pb: 3 }}>
-					<Typography sx={{ fontSize: 16, color: '#333' }}>
+				<DialogContent sx={{ textAlign: 'center', pt: 2, pb: 3, background: '#fff' }}>
+					<Typography sx={{ fontSize: 14, color: '#666' }}>
 						{errorMessage}
 					</Typography>
 				</DialogContent>
-				<DialogActions sx={{ pb: 2, px: 3, justifyContent: 'center' }}>
+				<DialogActions sx={{ pb: 2.5, px: 3, justifyContent: 'center', background: '#fff' }}>
 					<Button 
 						onClick={() => setErrorDialogOpen(false)} 
 						variant="contained" 
-						sx={{ background: '#e53935', color: '#fff', fontWeight: 600, borderRadius: 2, px: 3, '&:hover': { background: '#b71c1c' } }}
+						sx={{ background: '#e53935', color: '#fff', fontWeight: 600, borderRadius: 2, px: 3, textTransform: 'none', '&:hover': { background: '#c62828' } }}
 					>
 						Got it
 					</Button>
 				</DialogActions>
 			</Dialog>
+
 			{/* Booking Modal */}
 			{trainer && (
 				<BookingModal 
@@ -499,7 +780,8 @@ const TrainerProfile = () => {
 					trainer={trainer}
 					trainerUser={trainer.user}
 				/>
-			)}		</>
+			)}
+		</>
 	);
 };
 

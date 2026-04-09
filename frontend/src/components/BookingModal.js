@@ -19,6 +19,10 @@ import {
   Grid,
   Chip
 } from '@mui/material';
+import { DatePicker } from '@mui/x-date-pickers/DatePicker';
+import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
+import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
+import dayjs from 'dayjs';
 import { useAuth } from './AuthContext';
 
 const BookingModal = ({ open, onClose, trainer, trainerUser }) => {
@@ -162,12 +166,13 @@ const BookingModal = ({ open, onClose, trainer, trainerUser }) => {
   const availableHours = Object.keys(hourlySlots).filter(hour => hourlySlots[hour].length > 0);
 
   return (
-    <Dialog open={open} onClose={handleClose} maxWidth="sm" fullWidth PaperProps={{ sx: { borderRadius: 4 } }}>
-      <DialogTitle sx={{ background: '#ffeaea', color: '#e53935', fontWeight: 700, fontSize: 20 }}>
-        Book a Session with {trainerUser.name}
-      </DialogTitle>
+    <LocalizationProvider dateAdapter={AdapterDayjs}>
+      <Dialog open={open} onClose={handleClose} maxWidth="sm" fullWidth PaperProps={{ sx: { borderRadius: 4 } }}>
+        <DialogTitle sx={{ background: '#ffeaea', color: '#e53935', fontWeight: 700, fontSize: 20 }}>
+          Book a Session with {trainerUser.name}
+        </DialogTitle>
 
-      <DialogContent sx={{ pt: 3 }}>
+        <DialogContent sx={{ pt: 3 }}>
         {error && <Alert severity="error" sx={{ mb: 2 }}>{error}</Alert>}
         {success && <Alert severity="success" sx={{ mb: 2 }}>{success}</Alert>}
 
@@ -196,15 +201,31 @@ const BookingModal = ({ open, onClose, trainer, trainerUser }) => {
         <Typography variant="h6" sx={{ mb: 1.5, fontWeight: 600, color: '#e53935' }}>
           Select Date
         </Typography>
-        <TextField
-          fullWidth
-          name="date"
-          type="date"
-          value={formData.date}
-          onChange={handleInputChange}
-          inputProps={{ min: getTodayDate() }}
-          InputLabelProps={{ shrink: true }}
-          sx={{ mb: 3 }}
+        <DatePicker
+          label="Choose a date"
+          value={formData.date ? dayjs(formData.date) : null}
+          onChange={(newDate) => {
+            if (newDate) {
+              setFormData(prev => ({
+                ...prev,
+                date: newDate.format('YYYY-MM-DD')
+              }));
+            }
+          }}
+          minDate={dayjs()}
+          slotProps={{
+            textField: {
+              fullWidth: true,
+              sx: { mb: 3 }
+            },
+            layout: {
+              sx: {
+                '& .MuiDateCalendar-root': {
+                  width: 350
+                }
+              }
+            }
+          }}
         />
 
         {/* Hour Selection */}
@@ -347,7 +368,8 @@ const BookingModal = ({ open, onClose, trainer, trainerUser }) => {
           {loading ? 'Booking...' : 'Confirm Booking'}
         </Button>
       </DialogActions>
-    </Dialog>
+      </Dialog>
+    </LocalizationProvider>
   );
 };
 

@@ -3,6 +3,10 @@ import React, { useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
 import { Box, Drawer, AppBar, Toolbar, Typography, IconButton, List, ListItem, ListItemIcon, ListItemText, Divider, CssBaseline, Container, Grid, Card, CardContent, Avatar, Button, Chip, Badge, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Paper, Tooltip, Dialog, DialogTitle, DialogContent, TextField, Autocomplete, Select, MenuItem, FormControl, InputLabel, Alert, CircularProgress } from '@mui/material';
+import { DatePicker } from '@mui/x-date-pickers/DatePicker';
+import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
+import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
+import dayjs from 'dayjs';
 import MenuIcon from '@mui/icons-material/Menu';
 import DashboardIcon from '@mui/icons-material/Dashboard';
 import MessageIcon from '@mui/icons-material/Message';
@@ -218,17 +222,18 @@ const TrainerDashboard = () => {
 
   // Layout
   return (
-    <Box sx={{ display: 'flex', bgcolor: '#f7f8fa', minHeight: '100vh' }}>
-      <CssBaseline />
-      {/* Sidebar for desktop */}
-      <Drawer
-        variant="permanent"
-        sx={{
-          width: drawerWidth,
-          flexShrink: 0,
-          [`& .MuiDrawer-paper`]: { width: drawerWidth, boxSizing: 'border-box', bgcolor: '#fff', borderRight: '1px solid #eee' },
-          display: { xs: 'none', md: 'block' },
-        }}
+    <LocalizationProvider dateAdapter={AdapterDayjs}>
+      <Box sx={{ display: 'flex', bgcolor: '#f7f8fa', minHeight: '100vh' }}>
+        <CssBaseline />
+        {/* Sidebar for desktop */}
+        <Drawer
+          variant="permanent"
+          sx={{
+            width: drawerWidth,
+            flexShrink: 0,
+            [`& .MuiDrawer-paper`]: { width: drawerWidth, boxSizing: 'border-box', bgcolor: '#fff', borderRight: '1px solid #eee' },
+            display: { xs: 'none', md: 'block' },
+          }}
         open
       >
         <Toolbar sx={{ minHeight: 64 }}>
@@ -404,15 +409,21 @@ const TrainerDashboard = () => {
 
                     {/* Row 2: Date and Location */}
                     <Grid item xs={12} sm={6}>
-                      <TextField 
+                      <DatePicker 
                         label="Date" 
-                        type="date" 
-                        value={classForm.date} 
-                        onChange={e => setClassForm(f => ({ ...f, date: e.target.value }))} 
-                        required 
-                        fullWidth 
-                        InputLabelProps={{ shrink: true }}
-                        sx={fieldSx}
+                        value={classForm.date ? dayjs(classForm.date) : null}
+                        onChange={(newDate) => {
+                          if (newDate) {
+                            setClassForm(f => ({ ...f, date: newDate.format('YYYY-MM-DD') }));
+                          }
+                        }}
+                        minDate={dayjs()}
+                        slotProps={{
+                          textField: {
+                            fullWidth: true,
+                            sx: fieldSx
+                          }
+                        }}
                       />
                     </Grid>
                     <Grid item xs={12} sm={6}>
@@ -669,7 +680,8 @@ const TrainerDashboard = () => {
           )}
         </Box>
       </Box>
-    </Box>
+      </Box>
+    </LocalizationProvider>
   );
 };
 

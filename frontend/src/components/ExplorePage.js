@@ -3,6 +3,11 @@ import { useNavigate } from 'react-router-dom';
 import {
 	Container, Box, Typography, Grid, Paper, Button, TextField, Select, MenuItem, FormControl, Card, CardContent, CardMedia, Chip, useMediaQuery, Modal, Divider, Stack
 } from '@mui/material';
+import { DatePicker } from '@mui/x-date-pickers/DatePicker';
+import { TimePicker } from '@mui/x-date-pickers/TimePicker';
+import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
+import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
+import dayjs from 'dayjs';
 import SearchIcon from '@mui/icons-material/Search';
 import Header from './Header';
 import CalendarTodayIcon from '@mui/icons-material/CalendarToday';
@@ -90,9 +95,10 @@ const ExplorePage = () => {
 		);
 
 	return (
-		<>
-			<Header />
-			{/* HERO SECTION */}
+		<LocalizationProvider dateAdapter={AdapterDayjs}>
+			<>
+				<Header />
+				{/* HERO SECTION */}
 			<Box sx={{
 				minHeight: { xs: 420, md: 520 },
 				display: 'flex',
@@ -134,77 +140,113 @@ const ExplorePage = () => {
 							InputProps={{ startAdornment: <SearchIcon sx={{ color: '#e53935', mr: 1 }} /> }}
 							sx={{ flex: 1.1, minWidth: 160 }}
 						/>
-						<FormControl size="small" sx={{ flex: 1.1, minWidth: 140 }}>
-							<Select
-								displayEmpty
-								value={filters.location}
-								onChange={(e) => handleFilterChange('location', e.target.value)}
-								renderValue={(selected) => selected ? (
-									<Box sx={{ display: 'flex', alignItems: 'center', gap: 0.8 }}>
-										<LocationOnIcon sx={{ fontSize: 18, color: '#e53935' }} />
-										<span>{selected}</span>
-									</Box>
-								) : <span style={{ color: '#aaa' }}>Location</span>}
-							>
-								<MenuItem value="" disabled sx={{ display: 'none' }}>Location</MenuItem>
-								{locations.map((loc) => (
-									<MenuItem key={loc} value={loc}>{loc}</MenuItem>
-								))}
-							</Select>
-						</FormControl>
-						<FormControl size="small" sx={{ flex: 1.1, minWidth: 140 }}>
-							<Select
-								displayEmpty
-								value={filters.category}
-								onChange={(e) => handleFilterChange('category', e.target.value)}
-								renderValue={(selected) => selected ? (
-									<Box sx={{ display: 'flex', alignItems: 'center', gap: 0.8 }}>
-										<LocalOfferIcon sx={{ fontSize: 18, color: '#e53935' }} />
-										<span>{selected}</span>
-									</Box>
-								) : <span style={{ color: '#aaa' }}>Category</span>}
-							>
-								<MenuItem value="" disabled sx={{ display: 'none' }}>Category</MenuItem>
-								{classCategories.map((cat) => (
-									<MenuItem key={cat.label} value={cat.label}>{cat.label}</MenuItem>
-								))}
-							</Select>
-						</FormControl>
-						<FormControl size="small" sx={{ flex: 1, minWidth: 130 }}>
-							<Select
-								displayEmpty
-								value={filters.gym}
-								onChange={(e) => handleFilterChange('gym', e.target.value)}
-								renderValue={(selected) => selected ? (
-									<Box sx={{ display: 'flex', alignItems: 'center', gap: 0.8 }}>
-										<FitnessCenterIcon sx={{ fontSize: 18, color: '#e53935' }} />
-										<span>{selected}</span>
-									</Box>
-								) : <span style={{ color: '#aaa' }}>Gym</span>}
-							>
-								<MenuItem value="" disabled sx={{ display: 'none' }}>Gym</MenuItem>
-								{gyms.map((gym) => (
-									<MenuItem key={gym} value={gym}>{gym}</MenuItem>
-								))}
-							</Select>
-						</FormControl>
 						<TextField
-							type="date"
+							select
 							size="small"
-							label="Select Date"
-							value={filters.date}
-							onChange={(e) => handleFilterChange('date', e.target.value)}
-							InputLabelProps={{ shrink: true }}
-							sx={{ flex: 1.2, minWidth: 160 }}
+							label="Location"
+							value={filters.location}
+							onChange={(e) => handleFilterChange('location', e.target.value)}
+							InputProps={{
+								startAdornment: <LocationOnIcon sx={{ color: '#e53935', mr: 1, fontSize: 18 }} />
+							}}
+							sx={{ flex: 1.1, minWidth: 140 }}
+						>
+							<MenuItem value="">None</MenuItem>
+							{locations.map((loc) => (
+								<MenuItem key={loc} value={loc}>{loc}</MenuItem>
+							))}
+						</TextField>
+						<TextField
+							select
+							size="small"
+							label="Category"
+							value={filters.category}
+							onChange={(e) => handleFilterChange('category', e.target.value)}
+							InputProps={{
+								startAdornment: <LocalOfferIcon sx={{ color: '#e53935', mr: 1, fontSize: 18 }} />
+							}}
+							sx={{ flex: 1.1, minWidth: 140 }}
+						>
+							<MenuItem value="">None</MenuItem>
+							{classCategories.map((cat) => (
+								<MenuItem key={cat.label} value={cat.label}>{cat.label}</MenuItem>
+							))}
+						</TextField>
+						<TextField
+							select
+							size="small"
+							label="Gym"
+							value={filters.gym}
+							onChange={(e) => handleFilterChange('gym', e.target.value)}
+							InputProps={{
+								startAdornment: <FitnessCenterIcon sx={{ color: '#e53935', mr: 1, fontSize: 18 }} />
+							}}
+							sx={{ flex: 1, minWidth: 130 }}
+						>
+							<MenuItem value="">None</MenuItem>
+							{gyms.map((gym) => (
+								<MenuItem key={gym} value={gym}>{gym}</MenuItem>
+							))}
+						</TextField>
+						<DatePicker
+							label="Date"
+							value={filters.date ? dayjs(filters.date) : null}
+							onChange={(newDate) => {
+								if (newDate) {
+									handleFilterChange('date', newDate.format('YYYY-MM-DD'));
+								} else {
+									handleFilterChange('date', '');
+								}
+							}}
+							slotProps={{
+								textField: {
+									size: 'small',
+									sx: { 
+										flex: 1.2, 
+										minWidth: 160,
+										'& .MuiOutlinedInput-input': {
+											color: filters.date ? '#e53935' : 'inherit',
+											fontWeight: filters.date ? 600 : 400
+										}
+									}
+								},
+								layout: {
+									sx: {
+										'& .MuiDateCalendar-root': {
+											width: 320
+										}
+									}
+								}
+							}}
+							sx={{
+								'& .MuiOutlinedInput-root': {
+									borderRadius: 1
+								}
+							}}
 						/>
-						<TextField
-							type="time"
-							size="small"
-							label="Select Hour"
-							value={filters.time}
-							onChange={(e) => handleFilterChange('time', e.target.value)}
-							InputLabelProps={{ shrink: true }}
-							sx={{ flex: 0.9, minWidth: 110 }}
+						<TimePicker
+							label="Hour"
+							value={filters.time ? dayjs(`2024-01-01 ${filters.time}`) : null}
+							onChange={(newTime) => {
+								if (newTime) {
+									handleFilterChange('time', newTime.format('HH:mm'));
+								} else {
+									handleFilterChange('time', '');
+								}
+							}}
+							slotProps={{
+								textField: {
+									size: 'small',
+									sx: { 
+										flex: 0.9, 
+										minWidth: 110,
+										'& .MuiOutlinedInput-input': {
+											color: filters.time ? '#e53935' : 'inherit',
+											fontWeight: filters.time ? 600 : 400
+										}
+									}
+								}
+							}}
 						/>
 					</Paper>
 				</Container>
@@ -352,7 +394,8 @@ const ExplorePage = () => {
 					</Modal>
 				</Container>
 			</Box>
-		</>
+			</>
+		</LocalizationProvider>
 	);
 };
 

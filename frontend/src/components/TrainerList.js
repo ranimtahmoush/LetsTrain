@@ -4,9 +4,11 @@ import { useNavigate, Link } from 'react-router-dom';
 import Header from './Header';
 import {
 	Container, Typography, Grid, Card, CardContent, CardActions, Button,
-	TextField, Select, MenuItem, FormControl, InputLabel, Box, Paper, InputAdornment, Rating
+	TextField, MenuItem, InputLabel, Box, Paper, InputAdornment, Rating
 } from '@mui/material';
 import SearchIcon from '@mui/icons-material/Search';
+import LocationOnIcon from '@mui/icons-material/LocationOn';
+import FitnessCenterIcon from '@mui/icons-material/FitnessCenter';
 
 const categories = [
 	'Weight Loss', 'Strength Training', 'Yoga', 'Meditation', 'Boxing',
@@ -74,10 +76,10 @@ const TrainerList = () => {
 			   }}>
 				   <Container maxWidth="lg" sx={{ zIndex: 2, py: { xs: 5, md: 8 } }}>
 					   <Box sx={{ textAlign: 'center', color: '#fff', mb: 4 }}>
-						   <Typography variant="h2" sx={{ fontWeight: 800, fontSize: { xs: '2rem', sm: '2.8rem' }, mb: 1.5, letterSpacing: '-1px', lineHeight: 1.1 }}>
-							   Find Your Trainer
-						   </Typography>
-						   <Typography variant="h5" sx={{ fontWeight: 400, color: 'rgba(255,255,255,0.92)', mb: 2, fontSize: { xs: '1rem', sm: '1.2rem' } }}>
+					   <Typography variant="h2" sx={{ fontWeight: 800, fontSize: { xs: '2.4rem', sm: '3.5rem' }, mb: 1.5, letterSpacing: '-1px', lineHeight: 1.1 }}>
+						   Find Your Trainer
+					   </Typography>
+					   <Typography variant="h5" sx={{ fontWeight: 400, color: 'rgba(255,255,255,0.92)', mb: 2, fontSize: { xs: '1.1rem', sm: '1.35rem' } }}>
 							   Discover the perfect fitness coach for your goals
 						   </Typography>
 					   </Box>
@@ -103,32 +105,38 @@ const TrainerList = () => {
 							   InputProps={{ startAdornment: <SearchIcon sx={{ color: '#e53935', mr: 1 }} /> }}
 							   sx={{ flex: { xs: 1, sm: 1.2 }, minWidth: 180 }}
 						   />
-						   <FormControl size="small" sx={{ flex: 1, minWidth: 130 }}>
-							   <Select
-								   displayEmpty
-								   value={searchLocation}
-								   onChange={(e) => setSearchLocation(e.target.value)}
-								   renderValue={(selected) => selected || <span style={{ color: '#aaa' }}>Location</span>}
-							   >
-								   <MenuItem value="" disabled sx={{ display: 'none' }}>Location</MenuItem>
-								   {locations.map((loc) => (
-									   <MenuItem key={loc} value={loc}>{loc}</MenuItem>
-								   ))}
-							   </Select>
-						   </FormControl>
-						   <FormControl size="small" sx={{ flex: 1, minWidth: 130 }}>
-							   <Select
-								   displayEmpty
-								   value={searchCategory}
-								   onChange={(e) => setSearchCategory(e.target.value)}
-								   renderValue={(selected) => selected || <span style={{ color: '#aaa' }}>Specialty</span>}
-							   >
-								   <MenuItem value="" disabled sx={{ display: 'none' }}>Specialty</MenuItem>
-								   {categories.map((cat) => (
-									   <MenuItem key={cat} value={cat}>{cat}</MenuItem>
-								   ))}
-							   </Select>
-						   </FormControl>
+						   <TextField
+							   select
+							   size="small"
+							   label="Location"
+							   value={searchLocation}
+							   onChange={(e) => setSearchLocation(e.target.value)}
+							   InputProps={{
+								   startAdornment: <LocationOnIcon sx={{ color: '#e53935', mr: 1, fontSize: 18 }} />
+							   }}
+							   sx={{ flex: 1, minWidth: 130 }}
+						   >
+							   <MenuItem value="">None</MenuItem>
+							   {locations.map((loc) => (
+								   <MenuItem key={loc} value={loc}>{loc}</MenuItem>
+							   ))}
+						   </TextField>
+						   <TextField
+							   select
+							   size="small"
+							   label="Specialty"
+							   value={searchCategory}
+							   onChange={(e) => setSearchCategory(e.target.value)}
+							   InputProps={{
+								   startAdornment: <FitnessCenterIcon sx={{ color: '#e53935', mr: 1, fontSize: 18 }} />
+							   }}
+							   sx={{ flex: 1, minWidth: 130 }}
+						   >
+							   <MenuItem value="">None</MenuItem>
+							   {categories.map((cat) => (
+								   <MenuItem key={cat} value={cat}>{cat}</MenuItem>
+							   ))}
+						   </TextField>
 					   </Paper>
 				   </Container>
 			   </Box>

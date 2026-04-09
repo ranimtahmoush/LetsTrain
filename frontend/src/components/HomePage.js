@@ -25,11 +25,11 @@ const specialties = [
 	{ label: 'CrossFit' },
 ];
 const locations = [
-	'Lebanon', 'Beirut', 'Tripoli', 'Tyre', 'Sidon', 'Jounieh'
+	 'Beirut', 'Tripoli', 'Tyre', 'Sidon', 'Jounieh', 'Zahle', 'Baalbek', 'Byblos', 'Batroun', 'Akkar', 'Nabatieh', 'Marjayoun', 'Hasbaya', 'Rachaya', 'Jezzine', 'Chouf', 'Aley', 'Matn', 'Keserwan', 'Zgharta', 'Koura', 'Minieh-Danniyeh', 'Bcharre'
 ];
 const allSpecialties = [
 	'Weight Loss', 'Strength Training', 'Yoga', 'Meditation', 'Boxing', 'HIIT', 'Pilates', 'Rehabilitation', 'Cardio', 'CrossFit',
-	'Nutrition', 'Bodybuilding', 'Endurance', 'Mobility', 'Athletic Performance', 'Dance Fitness', 'TRX', 'Aqua Fitness', 'Senior Fitness', 'Prenatal', 'Postnatal', 'Sports Specific', 'Functional Training', 'Zumba', 'Martial Arts', 'Stretching', 'Balance', 'Wellness Coaching', 'Group Training', 'Personal Training', 'Bootcamp', 'Powerlifting', 'Calisthenics', 'Spinning', 'Aerobics', 'Kettlebell', 'Core', 'Flexibility', 'Obstacle Course', 'Parkour', 'Strongman', 'Kids Fitness', 'Adaptive Fitness', 'Other'
+	'Nutrition', 'Bodybuilding', 'Endurance', 'Mobility', 'Athletic Performance', 'Dance Fitness', 'TRX', 'Aqua Fitness', 'Senior Fitness', 'Prenatal', 'Postnatal', 'Sports Specific', 'Functional Training', 'Zumba', 'Martial Arts', 'Stretching', 'Balance', 'Wellness Coaching', 'Group Training', 'Personal Training', 'Bootcamp', 'Powerlifting', 'Calisthenics', 'Spinning', 'Aerobics', 'Kettlebell', 'Core', 'Flexibility', 'Obstacle Course', 'Parkour', 'Strongman', 'Kids Fitness', 'Adaptive Fitness', 'Physical Therapy', 'Other'
 ];
 
 const mockTrainers = [

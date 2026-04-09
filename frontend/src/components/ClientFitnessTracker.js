@@ -26,6 +26,10 @@ import {
   AppBar,
   Toolbar
 } from '@mui/material';
+import { DatePicker } from '@mui/x-date-pickers/DatePicker';
+import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
+import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
+import dayjs from 'dayjs';
 import { Delete as DeleteIcon, Add as AddIcon } from '@mui/icons-material';
 import LogoutIcon from '@mui/icons-material/Logout';
 import axios from 'axios';
@@ -228,22 +232,23 @@ const ClientFitnessTracker = () => {
   };
 
   return (
-    <>
-      <AppBar position="static" sx={{ mb: 4 }}>
-        <Toolbar>
-          <Typography variant="h6" sx={{ flexGrow: 1 }}>Fitness Tracker</Typography>
-          <Button color="inherit" onClick={() => navigate('/client-dashboard')}>
-            Back to Dashboard
-          </Button>
-          <Button color="inherit" onClick={handleLogout} startIcon={<LogoutIcon />}>
-            Logout
-          </Button>
-        </Toolbar>
-      </AppBar>
-      <Container maxWidth="lg" sx={{ py: 4 }}>
-      <Typography variant="h4" sx={{ mb: 3, fontWeight: 'bold' }}>Fitness Tracking</Typography>
+    <LocalizationProvider dateAdapter={AdapterDayjs}>
+      <>
+        <AppBar position="static" sx={{ mb: 4 }}>
+          <Toolbar>
+            <Typography variant="h6" sx={{ flexGrow: 1 }}>Fitness Tracker</Typography>
+            <Button color="inherit" onClick={() => navigate('/client-dashboard')}>
+              Back to Dashboard
+            </Button>
+            <Button color="inherit" onClick={handleLogout} startIcon={<LogoutIcon />}>
+              Logout
+            </Button>
+          </Toolbar>
+        </AppBar>
+        <Container maxWidth="lg" sx={{ py: 4 }}>
+        <Typography variant="h4" sx={{ mb: 3, fontWeight: 'bold' }}>Fitness Tracking</Typography>
 
-      <Paper sx={{ mb: 3 }}>
+        <Paper sx={{ mb: 3 }}>
         <Tabs value={activeTab} onChange={(e, v) => setActiveTab(v)}>
           <Tab label="Workout Logs" />
           <Tab label="Progress Photos" />
@@ -433,7 +438,7 @@ const ClientFitnessTracker = () => {
         <DialogContent sx={{ display: 'flex', flexDirection: 'column', gap: 2, pt: 2 }}>
           {dialogType === 'workout' && (
             <>
-              <TextField type="date" value={workoutForm.date} onChange={(e) => setWorkoutForm({ ...workoutForm, date: e.target.value })} />
+              <DatePicker label="Date" value={workoutForm.date ? dayjs(workoutForm.date) : null} onChange={(newDate) => setWorkoutForm({ ...workoutForm, date: newDate ? newDate.format('YYYY-MM-DD') : '' })} slotProps={{ textField: { fullWidth: true } }} />
               <TextField label="Exercise Name" value={workoutForm.exerciseName} onChange={(e) => setWorkoutForm({ ...workoutForm, exerciseName: e.target.value })} />
               <TextField type="number" label="Duration (minutes)" value={workoutForm.duration} onChange={(e) => setWorkoutForm({ ...workoutForm, duration: e.target.value })} />
               <TextField type="number" label="Sets" value={workoutForm.sets} onChange={(e) => setWorkoutForm({ ...workoutForm, sets: e.target.value })} />
@@ -445,7 +450,7 @@ const ClientFitnessTracker = () => {
 
           {dialogType === 'photo' && (
             <>
-              <TextField type="date" value={photoForm.date} onChange={(e) => setPhotoForm({ ...photoForm, date: e.target.value })} />
+              <DatePicker label="Date" value={photoForm.date ? dayjs(photoForm.date) : null} onChange={(newDate) => setPhotoForm({ ...photoForm, date: newDate ? newDate.format('YYYY-MM-DD') : '' })} slotProps={{ textField: { fullWidth: true } }} />
               <TextField label="Image URL" value={photoForm.imageUrl} onChange={(e) => setPhotoForm({ ...photoForm, imageUrl: e.target.value })} fullWidth />
               <TextField label="Notes" multiline rows={3} value={photoForm.notes} onChange={(e) => setPhotoForm({ ...photoForm, notes: e.target.value })} />
             </>
@@ -453,7 +458,7 @@ const ClientFitnessTracker = () => {
 
           {dialogType === 'metric' && (
             <>
-              <TextField type="date" value={metricForm.date} onChange={(e) => setMetricForm({ ...metricForm, date: e.target.value })} />
+              <DatePicker label="Date" value={metricForm.date ? dayjs(metricForm.date) : null} onChange={(newDate) => setMetricForm({ ...metricForm, date: newDate ? newDate.format('YYYY-MM-DD') : '' })} slotProps={{ textField: { fullWidth: true } }} />
               <TextField type="number" label="Weight (kg)" value={metricForm.weight} onChange={(e) => setMetricForm({ ...metricForm, weight: e.target.value })} />
               <TextField type="number" label="Body Fat %" value={metricForm.bodyFat} onChange={(e) => setMetricForm({ ...metricForm, bodyFat: e.target.value })} />
               <TextField type="number" label="Muscle Weight (kg)" value={metricForm.muscleWeight} onChange={(e) => setMetricForm({ ...metricForm, muscleWeight: e.target.value })} />
@@ -487,8 +492,9 @@ const ClientFitnessTracker = () => {
         </DialogActions>
       </Dialog>
       </Container>
-    </>
-  );
+        </>
+      </LocalizationProvider>
+    );
 };
 
 export default ClientFitnessTracker;
