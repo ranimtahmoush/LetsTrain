@@ -212,509 +212,545 @@ const TrainerProfile = () => {
 	const name = trainer.user?.name || trainer.name || 'Trainer';
 	const profilePicture = trainer.profilePicture || '';
 	const bio = trainer.bio || '';
+	const email = trainer.user?.email || '';
+	const instagram = trainer.user?.instagram || '';
+	const tiktok = trainer.user?.tiktok || '';
+	const avgRating = reviews.length > 0 ? (reviews.reduce((sum, r) => sum + r.rating, 0) / reviews.length) : 0;
 
 	return (
 		<>
 			<Header />
-			<Box sx={{ background: 'linear-gradient(135deg, #f8f9fa 0%, #f3f4f6 100%)', minHeight: '100vh', py: 4 }}>
-				<Container maxWidth="xl">
+			<Box sx={{ background: '#f8f9fa', minHeight: '100vh' }}>
+				{/* HERO SECTION - Premium 2-Column Layout */}
+				<Box 
+					sx={{ 
+						background: `linear-gradient(135deg, rgba(0,0,0,0.72), rgba(0,0,0,0.72)), url('/gym-bg.jpg') center/cover no-repeat`,
+						backgroundAttachment: 'fixed',
+						minHeight: { xs: 'auto', md: 550 },
+						display: 'flex',
+						alignItems: 'center',
+						position: 'relative',
+						py: { xs: 4, md: 6 },
+						px: { xs: 2, md: 0 }
+					}}
+				>
+					<Container maxWidth="lg" sx={{ zIndex: 2, width: '100%' }}>
+					<Grid container spacing={{ xs: 2, md: 4 }} sx={{ alignItems: 'flex-start' }}>
+							{/* LEFT COLUMN: Trainer Identity */}
+							<Grid item xs={12} md={6}>
+								<Box sx={{ color: '#fff' }}>
+									{/* Avatar + Basic Info */}
+						<Box sx={{ display: 'flex', gap: 2, mb: 1.25, alignItems: 'flex-start' }}>
+									<Avatar 
+										src={profilePicture} 
+										sx={{ 
+											width: { xs: 80, md: 100 }, 
+											height: { xs: 80, md: 100 },
+											boxShadow: '0 8px 24px rgba(0, 0, 0, 0.4)',
+											border: '4px solid #fff',
+											flexShrink: 0
+										}} 
+									/>
+									<Box sx={{ flex: 1 }}>
+									<Typography sx={{ fontWeight: 800, fontSize: { xs: 24, md: 32 }, color: '#fff', lineHeight: 1.1, mb: 0.5 }}>
+										{name}
+									</Typography>
+									<Box sx={{ display: 'flex', alignItems: 'center', gap: 1, mb: 1 }}>
+											<Typography sx={{ fontSize: 13, color: 'rgba(255,255,255,0.95)' }}>
+													{location}
+												</Typography>
+											</Box>
+											{/* Inline Stats + Rating */}
+											<Box sx={{ display: 'flex', alignItems: 'center', gap: 1.5, flexWrap: 'wrap' }}>
+												<Box sx={{ display: 'flex', gap: 0.2 }}>
+													{[...Array(5)].map((_, i) => (
+														<StarIcon key={i} sx={{ color: i < Math.round(avgRating) ? '#ffc107' : 'rgba(255,255,255,0.25)', fontSize: 16 }} />
+													))}
+												</Box>
+												<Typography sx={{ fontWeight: 600, color: '#fff', fontSize: 13 }}>
+													{avgRating > 0 ? avgRating.toFixed(1) : 'N/A'}
+												</Typography>
+												<Typography sx={{ color: 'rgba(255,255,255,0.8)', fontSize: 13 }}>
+													({reviews.length})
+												</Typography>
 
-					{/* ===== HERO SECTION: 3-COLUMN LAYOUT ===== */}
-					<Box 
-						sx={{ 
-							mb: 6,
-							p: { xs: 4, sm: 5 },
-							background: '#fff',
-							borderRadius: 3,
-							boxShadow: '0 2px 8px rgba(0, 0, 0, 0.1)',
-							border: '1px solid #f0f0f0'
-						}}
-					>
-						<Grid container spacing={{ xs: 2.5, sm: 3 }} alignItems="center">
-							{/* LEFT: Avatar + Basic Info */}
-					<Grid item xs={12} sm="auto" sx={{ display: 'flex', gap: { xs: 2, sm: 2.5 }, alignItems: { xs: 'center', sm: 'flex-start' } }}>
-						<Avatar 
-							src={profilePicture} 
-							sx={{ 
-								width: 80, 
-								height: 80,
-								boxShadow: '0 2px 8px rgba(0, 0, 0, 0.12)',
-								flexShrink: 0
-							}} 
-						/>
-						<Box sx={{ textAlign: { xs: 'center', sm: 'left' }, minWidth: 0 }}>
-							<Typography variant="h5" sx={{ fontWeight: 700, mb: 0.75, fontSize: { xs: 20, sm: 24 }, color: '#1a1a1a' }}>
-								{name}
-							</Typography>
-							<Box sx={{ display: 'flex', alignItems: 'center', gap: 0.5, mb: 1 }}>
-								<LocationOnIcon sx={{ fontSize: 14, color: '#999' }} />
-								<Typography variant="caption" sx={{ color: '#666', fontSize: 13 }}>{location}</Typography>
-							</Box>
-							{/* Rating Stars */}
-							<Box sx={{ display: 'flex', alignItems: 'center', gap: 0.75 }}>
-								<Box sx={{ display: 'flex', gap: 0.1 }}>
-									{[...Array(5)].map((_, i) => {
-										const avgRating = reviews.length > 0 ? (reviews.reduce((sum, r) => sum + r.rating, 0) / reviews.length) : 0;
-										return <StarIcon key={i} sx={{ color: i < Math.round(avgRating) ? '#ffc107' : '#e0e0e0', fontSize: 14 }} />;
-									})}
+											</Box>
+										</Box>
+									</Box>
+
+									{/* Specialties */}
+									{specialties.length > 0 && (
+										<Box sx={{ mt: 1 }}>
+											<Typography sx={{ fontSize: 12, color: '#444', fontWeight: 800, mb: 1, textTransform: 'uppercase', letterSpacing: 0.5 }}>
+												✨ Specialties
+											</Typography>
+											<Box sx={{ display: 'flex', gap: 1, flexWrap: 'wrap' }}>
+												{specialties.map((spec, i) => (
+													<Chip
+														key={i}
+														label={spec}
+														sx={{
+															background: '#fce4ec',
+															color: '#ad1457',
+															fontWeight: 700,
+															fontSize: 12,
+															height: 28,
+															borderRadius: 2,
+															boxShadow: '0 2px 6px rgba(173, 20, 87, 0.2)',
+															'& .MuiChip-label': { px: 1 }
+														}}
+													/>
+												))}
+											</Box>
+										</Box>
+									)}
 								</Box>
-								<Typography variant="body2" sx={{ fontWeight: 600, color: '#333', fontSize: 13 }}>
-									{reviews.length > 0 ? (reviews.reduce((sum, r) => sum + r.rating, 0) / reviews.length).toFixed(1) : 'N/A'}
-								</Typography>
-								<Typography variant="caption" sx={{ color: '#999', fontSize: 12 }}>
-									({reviews.length})
-								</Typography>
-						</Box>
-					</Box>
-				</Grid>
+							</Grid>
 
-				{/* CENTER: Stats Grid */}
-					<Grid item xs={12} sm="auto">
-								<Box sx={{ display: 'grid', gridTemplateColumns: 'repeat(3, 1fr)', gap: 0, textAlign: 'center' }}>
-									<Box sx={{ px: 2, py: 1, borderRight: '1px solid #f0f0f0', '&:last-child': { borderRight: 'none' } }}>
-										<Typography variant="h6" sx={{ fontWeight: 700, color: '#e53935', mb: 0.5, fontSize: 20 }}>{clientsTrained}</Typography>
-										<Typography variant="caption" sx={{ color: '#999', fontSize: 11, fontWeight: 500 }}>Clients</Typography>
-									</Box>
-									<Box sx={{ px: 2, py: 1, borderRight: '1px solid #f0f0f0' }}>
-										<Typography variant="h6" sx={{ fontWeight: 700, color: '#e53935', mb: 0.5, fontSize: 20 }}>{sessionsCompleted}</Typography>
-										<Typography variant="caption" sx={{ color: '#999', fontSize: 11, fontWeight: 500 }}>Sessions</Typography>
-									</Box>
-									<Box sx={{ px: 2, py: 1 }}>
-										<Typography variant="h6" sx={{ fontWeight: 700, color: '#e53935', mb: 0.5, fontSize: 20 }}>{experience}</Typography>
-										<Typography variant="caption" sx={{ color: '#999', fontSize: 11, fontWeight: 500 }}>Yrs</Typography>
-            </Box>
-        </Box>				</Grid>
+							{/* RIGHT COLUMN: Premium Booking Card */}
+							<Grid item xs={12} md={6}>
+								<Box 
+									sx={{ 
+										background: '#fff',
+										borderRadius: 3,
+									p: 3,
+									boxShadow: '0 20px 60px rgba(0, 0, 0, 0.35)',
+									height: '100%',
+									display: 'flex',
+									flexDirection: 'column',
+									justifyContent: 'space-between',
+									position: 'sticky',
+									top: 100,
+									border: '1px solid rgba(0,0,0,0.06)'
+								}}
+							>
+								{/* Price Section */}
+							<Box sx={{ mb: 2.5, textAlign: 'center', pb: 2.5, borderBottom: '2px solid #f0f0f0' }}>
+								<Typography sx={{ fontSize: 9, color: '#aaa', fontWeight: 800, letterSpacing: 1, mb: 0.75, textTransform: 'uppercase' }}>
+									per session
+								</Typography>
+								<Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'center', gap: 0.25 }}>
+									<Typography sx={{ fontSize: 22, color: '#999', fontWeight: 600 }}>$</Typography>
+								<Typography sx={{ fontSize: 64, fontWeight: 900, color: '#e53935', lineHeight: 0.95, letterSpacing: -2 }}>
+									{price}
+								</Typography>
+							</Box>
+								</Box>
 
-				{/* RIGHT: Price + Actions */}							<Grid item xs={12} sm="auto">
-								<Box sx={{ display: 'flex', flexDirection: 'column', alignItems: { xs: 'stretch', sm: 'flex-end' }, gap: 1.5 }}>
-									<Box sx={{ textAlign: { xs: 'center', sm: 'right' } }}>
-										<Typography variant="h6" sx={{ fontWeight: 700, color: '#1a1a1a', mb: 0 }}>$</Typography>
-										<Typography variant="h6" sx={{ fontWeight: 700, color: '#1a1a1a', fontSize: 22, mb: 0.25 }}>
-											{price}
-										</Typography>
-										<Typography variant="caption" sx={{ color: '#999', fontSize: 12 }}>per session</Typography>
-									</Box>
-									<Box sx={{ display: 'flex', gap: 1, flexDirection: { xs: 'column', sm: 'row' } }}>
-										<Button 
-											variant="contained" 
-											onClick={handleBookSession}
-											sx={{ 
-												py: 1,
-												px: 2.5,
-												fontWeight: 600,
-												fontSize: 13,
-												borderRadius: 2,
-												background: '#e53935',
+								{/* CTA Buttons */}
+							<Stack spacing={1.15} sx={{ mb: 2 }}>
+									<Button 
+										variant="contained" 
+										onClick={handleBookSession}
+										fullWidth
+										sx={{ 
+											py: 1.4,
+											fontWeight: 700,
+											fontSize: 15,
+											borderRadius: 2,
+											background: 'linear-gradient(135deg, #e53935 0%, #d32f2f 100%)',
 												color: '#fff',
-												boxShadow: '0 2px 6px rgba(229, 57, 53, 0.2)',
-												flexGrow: 1,
+												boxShadow: '0 8px 24px rgba(229, 57, 53, 0.35)',
+												transition: 'all 0.25s cubic-bezier(0.4, 0, 0.2, 1)',
+												textTransform: 'none',
 												'&:hover': { 
-													background: '#c62828',
-													boxShadow: '0 3px 10px rgba(229, 57, 53, 0.25)'
+													background: 'linear-gradient(135deg, #d32f2f 0%, #b71c1c 100%)',
+													boxShadow: '0 12px 32px rgba(229, 57, 53, 0.45)',
+													transform: 'translateY(-2px)'
 												}
 											}}
 										>
-											Book
+											Book Session
 										</Button>
 										<Button 
 											variant="outlined" 
 											onClick={handleMessageClick}
 											disabled={messageLoading}
-											startIcon={messageLoading ? <CircularProgress size={14} sx={{ color: '#e53935' }} /> : <MessageIcon sx={{ fontSize: 18 }} />}
+											startIcon={<MessageIcon sx={{ fontSize: 18 }} />}
+											fullWidth
 											sx={{ 
-												py: 1,
-												px: 2.5,
-												fontWeight: 600,
-												fontSize: 13,
+											py: 1.4,
+											fontWeight: 700,
+											fontSize: 15,
 												borderRadius: 2,
 												color: '#e53935',
 												borderColor: '#e53935',
-												flexGrow: 1,
+												border: '2px solid',
+												transition: 'all 0.25s ease',
+												textTransform: 'none',
 												'&:hover': { 
-													background: 'rgba(229, 57, 53, 0.05)',
-													borderColor: '#c62828',
-													color: '#c62828'
+													background: 'rgba(229, 57, 53, 0.08)',
+													borderColor: '#d32f2f',
+													color: '#d32f2f',
+													boxShadow: '0 6px 16px rgba(229, 57, 53, 0.2)'
 												}
 											}}
 										>
-											{messageLoading ? 'Starting...' : 'Message'}
+											{messageLoading ? 'Sending...' : 'Send Message'}
 										</Button>
+									</Stack>
+
+									{/* Trust Note */}
+									<Box sx={{ background: 'rgba(229, 57, 53, 0.05)', p: 1.5, borderRadius: 1.5, textAlign: 'center' }}>
+										<Typography sx={{ fontSize: 12, color: '#666', fontWeight: 500 }}>
+											⏱️ Usually responds within 24 hours
+										</Typography>
 									</Box>
 								</Box>
 							</Grid>
 						</Grid>
-					</Box>
+					</Container>
+				</Box>
 
-					{/* ===== CONTENT SECTIONS ===== */}
-					<Grid container spacing={3}>
-					{/* LEFT: About + Specialties + Certifications */}
-					<Grid item xs={12} md={8}>
-						<Grid container spacing={3}>
-							{/* About */}
-							<Grid item xs={12}>
-								<Box 
-									sx={{ 
-										p: 3,
-										background: '#fff',
-										borderRadius: 2,
-										boxShadow: '0 1px 4px rgba(0, 0, 0, 0.09)',
-										border: '1px solid #f5f5f5',
-										transition: 'all 0.3s ease',
-										'&:hover': {
-											boxShadow: '0 2px 8px rgba(0, 0, 0, 0.1)',
-											borderColor: '#f0f0f0'
-										}
-									}}
-								>
-									<Box sx={{ display: 'flex', alignItems: 'center', gap: 1, mb: 2 }}>
-										<Box sx={{ width: 4, height: 24, background: '#e53935', borderRadius: 1 }} />
-										<Typography variant="h6" sx={{ fontWeight: 700, fontSize: 16, color: '#1a1a1a', m: 0 }}>About</Typography>
-									</Box>
-									<Typography variant="body2" sx={{ color: '#555', lineHeight: 1.8, fontSize: 13 }}>
-										{bio || 'No bio provided.'}
+				{/* MAIN CONTENT - Premium Sections */}
+			<Box sx={{ background: '#f8f9fa', py: { xs: 5, md: 6 } }}>
+					<Container maxWidth="md">
+						{/* ABOUT SECTION */}
+						{bio && (
+							<Box sx={{ mb: 3.5 }}>
+								<Typography sx={{ fontWeight: 800, fontSize: { xs: 22, md: 26 }, color: '#1a1a1a', mb: 1.5, display: 'flex', alignItems: 'center', gap: 1 }}>
+									<span style={{ fontSize: '24px' }}>📝</span> About
+								</Typography>
+								<Box sx={{ background: '#fff', p: 3, borderRadius: 3, border: '1px solid #ddd', boxShadow: '0 2px 8px rgba(0,0,0,0.1)' }}>
+									<Typography sx={{ fontSize: 16, lineHeight: 1.75, color: '#555', textAlign: 'left' }}>
+										{bio}
 									</Typography>
 								</Box>
-							</Grid>
+							</Box>
+						)}
 
-							{/* Specialties + Certifications: Side by Side */}
-							<Grid item xs={12}>
-								<Grid container spacing={2.5}>
+						{/* STATS GRID */}
+						<Box sx={{ mb: 2.75, p: 3, background: '#fff', borderRadius: 3, boxShadow: '0 2px 8px rgba(0,0,0,0.08)', border: '1px solid #f0f0f0' }}>
+						<Box sx={{ display: 'flex', gap: 3, flexWrap: 'wrap', alignItems: 'center' }}>
+							<Box sx={{ display: 'flex', gap: 0.4, alignItems: 'baseline' }}>
+								<Typography sx={{ fontSize: 32, fontWeight: 900, color: '#e53935' }}>
+									{experience}
+								</Typography>
+								<Typography sx={{ fontSize: 12, color: '#888', fontWeight: 800, textTransform: 'uppercase', letterSpacing: 0.2 }}>
+									yrs
+								</Typography>
+							</Box>
+							<Box sx={{ width: '1px', height: 18, background: '#e0e0e0' }} />
+							<Box sx={{ display: 'flex', gap: 0.4, alignItems: 'baseline' }}>
+								<Typography sx={{ fontSize: 32, fontWeight: 900, color: '#e53935' }}>
+									{clientsTrained}
+								</Typography>
+								<Typography sx={{ fontSize: 12, color: '#888', fontWeight: 800, textTransform: 'uppercase', letterSpacing: 0.2 }}>
+									clients
+								</Typography>
+							</Box>
+							<Box sx={{ width: '1px', height: 18, background: '#e0e0e0' }} />
+							<Box sx={{ display: 'flex', gap: 0.4, alignItems: 'baseline' }}>
+								<Typography sx={{ fontSize: 32, fontWeight: 900, color: '#e53935' }}>
+									{sessionsCompleted}
+								</Typography>
+								<Typography sx={{ fontSize: 12, color: '#888', fontWeight: 800, textTransform: 'uppercase', letterSpacing: 0.2 }}>
+									sessions
+								</Typography>
+							</Box>
+							<Box sx={{ width: '1px', height: 18, background: '#e0e0e0' }} />
+							<Box sx={{ display: 'flex', gap: 0.35, alignItems: 'center' }}>
+								<Box sx={{ display: 'flex', gap: 0.15 }}>
+									{[...Array(5)].map((_, i) => (
+										<StarIcon key={i} sx={{ color: i < Math.round(avgRating) ? '#ffc107' : '#e0e0e0', fontSize: 15 }} />
+									))}
+								</Box>
+								<Typography sx={{ fontSize: 15, fontWeight: 800, color: '#e53935', ml: 0.25 }}>
+									{avgRating > 0 ? avgRating.toFixed(1) : 'N/A'}
+								</Typography>
+								<Typography sx={{ fontSize: 11, color: '#888', fontWeight: 600, ml: 0.25 }}>
+									({reviews.length})
+								</Typography>
+							</Box>
+						</Box>
+					</Box>
+
+				{/* SPECIALTIES & CERTIFICATIONS */}
+						<Box sx={{ mb: 2.75 }}>
+							<Typography sx={{ fontWeight: 800, fontSize: { xs: 24, md: 28 }, color: '#1a1a1a', mb: 2.25, display: 'flex', alignItems: 'center', gap: 1 }}>
+								✨ Specialties & Certifications
+							</Typography>
+							<Grid container spacing={2.5}>
 								{/* Specialties */}
 								{specialties.length > 0 && (
 									<Grid item xs={12} sm={6}>
-										<Box 
-											sx={{ 
-												p: 3,
-												background: '#fff',
-												borderRadius: 2,
-												boxShadow: '0 1px 3px rgba(0, 0, 0, 0.08)',
-												height: '100%'
-											}}
-										>
-												<Box sx={{ display: 'flex', alignItems: 'center', gap: 1, mb: 2 }}>
-													<Box sx={{ width: 4, height: 24, background: '#e53935', borderRadius: 1 }} />
-													<Typography variant="h6" sx={{ fontWeight: 700, fontSize: 16, color: '#1a1a1a', m: 0 }}>Specialties</Typography>
-												</Box>
-										<Box sx={{ display: 'flex', flexWrap: 'wrap', gap: 0.75 }}>
-											{specialties.map((spec, i) => (
-												<Chip 
-													key={i} 
-													label={spec} 
-													sx={{ 
-														fontSize: 12,
-														height: 26,
-															background: '#f0f0f0',
-															color: '#333',
-															fontWeight: 500,
-															'&:hover': { background: '#e8e8e8' }
-														}} 
+										<Box sx={{ background: '#fff', p: 3, borderRadius: 3, border: '1px solid #f0f0f0', boxShadow: '0 2px 8px rgba(0,0,0,0.08)', transition: 'all 0.2s ease' }}>
+											<Typography sx={{ fontWeight: 800, fontSize: 13, color: '#1a1a1a', mb: 2, textTransform: 'uppercase', letterSpacing: 0.5 }}>
+												Specialties
+											</Typography>
+											<Box sx={{ display: 'flex', gap: 1, flexWrap: 'wrap' }}>
+												{specialties.map((spec, i) => (
+													<Chip
+														key={i}
+														label={spec}
+														sx={{
+															background: '#fce4ec',
+															color: '#ad1457',
+															fontWeight: 700,
+															fontSize: 12.5,
+															height: 30,
+															borderRadius: 2,
+															boxShadow: '0 2px 6px rgba(173, 20, 87, 0.15)',
+															'& .MuiChip-label': { px: 1 }
+														}}
 													/>
 												))}
 											</Box>
 										</Box>
 									</Grid>
 								)}
-
 								{/* Certifications */}
 								{certificates.length > 0 && (
-									<Grid item xs={12} sm={specialties.length > 0 ? 6 : 12}>
-										<Box 
-											sx={{ 
-												p: 3,
-												background: '#fff',
-												borderRadius: 2,
-												boxShadow: '0 1px 3px rgba(0, 0, 0, 0.08)',
-												height: '100%'
-											}}
-										>
-															<Box sx={{ display: 'flex', alignItems: 'center', gap: 1, mb: 2 }}>
-																<Box sx={{ width: 4, height: 24, background: '#e53935', borderRadius: 1 }} />
-																<Typography variant="h6" sx={{ fontWeight: 700, fontSize: 16, color: '#1a1a1a', m: 0 }}>Certifications</Typography>
-															</Box>
-											<Stack spacing={1}>
+									<Grid item xs={12} sm={6}>
+										<Box sx={{ background: '#fff', p: 3, borderRadius: 3, border: '1px solid #f0f0f0', boxShadow: '0 2px 8px rgba(0,0,0,0.08)', transition: 'all 0.2s ease' }}>
+											<Typography sx={{ fontWeight: 800, fontSize: 13, color: '#1a1a1a', mb: 2, textTransform: 'uppercase', letterSpacing: 0.5 }}>
+												Certifications
+											</Typography>
+											<Stack spacing={1.25}>
 												{certificates.map((cert, i) => (
-													<Box 
-														key={i}
-														sx={{ 
-															p: 1.25,
-															display: 'flex',
-															alignItems: 'center',
-															background: '#f8f9fa',
-															borderRadius: 1.5,
-															border: '1px solid #eee'
-														}}
-													>
-														<Box sx={{ color: '#e53935', mr: 1, fontWeight: 700, fontSize: 14 }}>✓</Box>
-														<Typography variant="body2" sx={{ fontWeight: 500, color: '#333', fontSize: 13 }}>{cert}</Typography>
-													</Box>
-												))}
-											</Stack>
-										</Box>
-									</Grid>
-								)}
-							</Grid>
-						</Grid>
-					</Grid>
-				</Grid>
-
-				{/* RIGHT: Client Ratings Metrics */}
-					{Object.values(averageMetrics).some(v => v > 0) && (
-						<Grid item xs={12} md={4}>
-							<Box 
-								sx={{ 
-									p: 3,
-									background: '#fff',
-									borderRadius: 2,
-									boxShadow: '0 1px 3px rgba(0, 0, 0, 0.08)'
-								}}
-							>
-								<Box sx={{ display: 'flex', alignItems: 'center', gap: 1, mb: 2.5 }}>
-									<Box sx={{ width: 4, height: 24, background: '#e53935', borderRadius: 1 }} />
-									<Typography variant="h6" sx={{ fontWeight: 700, fontSize: 16, color: '#1a1a1a', m: 0 }}>Client Ratings</Typography>
+													<Box key={i} sx={{ display: 'flex', gap: 1.25, alignItems: 'flex-start', pb: i !== certificates.length - 1 ? 1.25 : 0, borderBottom: i !== certificates.length - 1 ? '1px solid #f0f0f0' : 'none' }}>
+														<Box sx={{ fontSize: 16, mt: 0.25 }}>🏆</Box>
+														<Typography sx={{ fontSize: 14, color: '#333', fontWeight: 600, lineHeight: 1.5 }}>{cert}</Typography>
+												</Box>
+											))}
+										</Stack>
 								</Box>
-								<Stack spacing={2}>
-									{metricLabels.map(m => (
-										<Box key={m.key}>
-											<Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', mb: 0.75 }}>
-												<Typography variant="body2" sx={{ fontWeight: 500, color: '#666', fontSize: 12 }}>{m.label}</Typography>
-												<Typography variant="body2" sx={{ fontWeight: 700, color: '#1a1a1a', fontSize: 13 }}>
-													{(Number(averageMetrics[m.key] || 0)).toFixed(1)}/5
-												</Typography>
-											</Box>
-											<Box sx={{ height: 5, background: '#e8e8e8', borderRadius: 10, overflow: 'hidden' }}>
-												<Box 
+							</Grid>
+						)}
+					</Grid>
+				</Box>
+
+				{/* CLIENT RATINGS BREAKDOWN */}
+				{Object.values(averageMetrics).some(v => v > 0) && (
+					<Box sx={{ mb: 2.75 }}>
+						<Typography sx={{ fontWeight: 800, fontSize: 13, mb: 2.25, color: '#1a1a1a', textTransform: 'uppercase', letterSpacing: 0.5 }}>
+							⭐ Client Ratings
+						</Typography>
+						<Grid container spacing={2.5}>
+							{metricLabels.map(m => (
+								<Grid item xs={12} sm={6} md={3} key={m.key}>
+									<Box sx={{ background: '#fff', p: 2.5, borderRadius: 3, border: '1px solid #f0f0f0', boxShadow: '0 2px 8px rgba(0,0,0,0.08)', transition: 'all 0.2s ease' }}>
+										<Typography sx={{ fontWeight: 800, color: '#1a1a1a', mb: 1.25, fontSize: 12, textTransform: 'uppercase', letterSpacing: 0.4 }}>
+											{m.label}
+										</Typography>
+										<Box sx={{ display: 'flex', gap: 0.15, mb: 0.75 }}>
+											{[...Array(5)].map((_, i) => (
+												<StarIcon 
+													key={i} 
 													sx={{ 
-														height: '100%',
-														background: '#e53935',
-														width: `${(Number(averageMetrics[m.key] || 0) / 5) * 100}%`,
-														transition: 'width 0.4s ease',
-														borderRadius: 10
+														color: i < Math.round(Number(averageMetrics[m.key] || 0)) ? '#ffc107' : '#e0e0e0', 
+														fontSize: 13 
 													}} 
 												/>
+											))}
+										</Box>
+										<Typography sx={{ color: '#e53935', fontWeight: 900, fontSize: 16 }}>
+											{(Number(averageMetrics[m.key] || 0)).toFixed(1)}/5
+										</Typography>
+									</Box>
+								</Grid>
+							))}
+						</Grid>
+					</Box>
+				)}
+
+						{/* REVIEWS SECTION */}
+						<Box sx={{ pb: 0 }}>
+						<Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', mb: 2.25, gap: 2 }}>
+										<Typography sx={{ fontWeight: 800, fontSize: { xs: 24, md: 28 }, color: '#1a1a1a', display: 'flex', alignItems: 'center', gap: 1 }}>
+											⭐ Reviews {reviews.length > 0 && `(${reviews.length})`}
+								</Typography>
+								{!showAddReview && (
+									<Button 
+										variant="contained"
+										onClick={handleAddReview}
+										sx={{ 
+											background: '#e53935',
+											color: '#fff',
+											fontWeight: 700,
+												fontSize: 14,
+												borderRadius: 2,
+												px: 2.75,
+												py: 1.1,
+												boxShadow: '0 4px 12px rgba(229, 57, 53, 0.3)',
+												'&:hover': { background: '#c62828', boxShadow: '0 6px 16px rgba(229, 57, 53, 0.4)' }
+										}}
+									>
+										Add Review
+									</Button>
+								)}
+							</Box>
+
+							{reviews.length === 0 && !showAddReview && (
+									<Box sx={{ textAlign: 'center', py: 3.5, background: '#fafafa', borderRadius: 3, border: '1px solid #f0f0f0', boxShadow: '0 1px 4px rgba(0,0,0,0.06)' }}>
+										<Typography sx={{ fontSize: 15, fontWeight: 700, color: '#999', mb: 0.75 }}>
+									No reviews yet
+								</Typography>
+								<Typography sx={{ fontSize: 13, color: '#bbb' }}>
+									</Typography>
+								</Box>
+							)}
+
+							{showAddReview && (
+							<Box sx={{ mb: 2.5, p: 3, background: '#f8f9fa', borderRadius: 2, border: '1px solid #eee' }}>
+								<form onSubmit={handleReviewSubmit}>
+									<Stack spacing={2}>
+										<Box>
+											<Typography variant="body2" sx={{ fontWeight: 700, mb: 1.5, color: '#1a1a1a', fontSize: 14 }}>
+												Your Rating <span style={{ color: '#e53935' }}>*</span>
+											</Typography>
+											<Rating
+												value={overallRating || 0}
+												size="large"
+												onChange={(_, value) => handleOverallChange(value)}
+											/>
+										</Box>
+										<TextField 
+											label="Share your feedback" 
+											placeholder="Tell other clients about your experience..."
+											multiline 
+											rows={4}
+											value={reviewText} 
+											onChange={e => setReviewText(e.target.value)}
+											fullWidth
+											variant="outlined"
+											sx={{
+												'& .MuiOutlinedInput-root': {
+													borderRadius: 1.5,
+													fontSize: 14,
+													background: '#fff'
+												}
+											}}
+										/>
+										<Box>
+											<Typography variant="body2" sx={{ fontWeight: 600, mb: 1.5, color: '#666', fontSize: 12, textTransform: 'uppercase', letterSpacing: 0.3 }}>
+												Rate specific areas (optional)
+											</Typography>
+											<Grid container spacing={2}>
+												{metricLabels.map(m => (
+													<Grid item xs={6} sm={3} key={m.key}>
+														<Box>
+															<Typography variant="caption" sx={{ fontWeight: 600, color: '#333', display: 'block', mb: 0.75, fontSize: 12 }}>{m.label}</Typography>
+															<Rating
+																name={m.key}
+																value={reviewMetrics[m.key] || 0}
+																onChange={(_, value) => handleReviewChange(m.key, value)}
+																size="small"
+															/>
+														</Box>
+													</Grid>
+												))}
+											</Grid>
+										</Box>
+										<Button 
+											type="submit" 
+											variant="contained"
+											fullWidth
+											sx={{ 
+												background: '#e53935',
+												color: '#fff',
+												fontWeight: 700,
+												py: 1,
+													fontSize: 14,
+													'&:hover': { background: '#c62828' }
+												}}
+											>
+												Post Review
+											</Button>
+										</Stack>
+									</form>
+								</Box>
+							)}
+
+							{reviews.length > 0 && (
+						<Stack spacing={1.75}>
+							{reviews.map((review, idx) => (
+								<Box 
+									key={idx}
+									sx={{ 
+										p: 2.25,
+										background: '#fff',
+										borderRadius: 2,
+										border: '1px solid #e5e5e5',
+										transition: 'all 0.3s ease',
+										boxShadow: '0 1px 2px rgba(0, 0, 0, 0.04)',
+											'&:hover': {
+												boxShadow: '0 4px 12px rgba(0, 0, 0, 0.08)',
+												borderColor: '#e0e0e0'
+											}
+										}}
+									>
+										{/* Review Header */}
+									<Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', mb: 1.25, gap: 2 }}>
+										<Box sx={{ display: 'flex', gap: 1.25, flex: 1 }}>
+											<Avatar 
+												src={review.client?.profilePicture} 
+												alt={review.client?.name}
+												sx={{ width: 32, height: 32, flexShrink: 0 }}
+											/>
+											<Box>
+												<Typography sx={{ fontWeight: 700, color: '#1a1a1a', fontSize: 13.5 }}>
+													{review.client?.name || 'Anonymous'}
+												</Typography>
+												<Typography sx={{ color: '#999', fontSize: 11.5 }}>
+													{new Date(review.createdAt).toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' })}
+												</Typography>
 											</Box>
+										</Box>
+										<Box sx={{ display: 'flex', gap: 0.15 }}>
+											{[...Array(5)].map((_, i) => (
+												<StarIcon 
+													key={i} 
+													sx={{ 
+														color: i < review.rating ? '#ffc107' : '#e5e5e5', 
+														fontSize: 14 
+													}}
+												/>
+											))}
+										</Box>
+									</Box>
+
+											{/* Review Text */}
+										<Typography sx={{ color: '#555', lineHeight: 1.65, mb: 1, fontSize: 13.5, fontWeight: 500 }}>
+											"{review.comment}"
+										</Typography>
+
+									{/* Metrics Grid (if any) */}
+									{review.metrics && Object.values(review.metrics).some(v => v > 0) && (
+										<Box sx={{ pt: 1.25, borderTop: '1px solid #f0f0f0' }}>
+											<Grid container spacing={0.75} sx={{ mt: 0 }}>
+												{metricLabels.map(m => 
+													review.metrics?.[m.key] > 0 ? (
+														<Grid item xs={6} sm={3} key={m.key}>
+															<Box>
+																<Typography sx={{ color: '#666', fontWeight: 600, display: 'block', mb: 0.4, fontSize: 11 }}>
+																	{m.label}
+																</Typography>
+																<Box sx={{ display: 'flex', gap: 0.1 }}>
+																	{[...Array(5)].map((_, i) => (
+																		<StarIcon 
+																			key={i} 
+																			sx={{ 
+																				color: i < review.metrics[m.key] ? '#e53935' : '#e8e8e8', 
+																				fontSize: 11 
+																			}} 
+																		/>
+																	))}
+																</Box>
+															</Box>
+														</Grid>
+													) : null
+												)}
+											</Grid>
+										</Box>
+									)}
 										</Box>
 									))}
 								</Stack>
-							</Box>
-						</Grid>
-					)}
-
-					{/* Reviews Section - Full Width */}
-					<Grid item xs={12}>
-							<Box 
-								sx={{ 
-									p: 3,
-									background: '#fff',
-									borderRadius: 2,
-									boxShadow: '0 1px 4px rgba(0, 0, 0, 0.09)',
-									border: '1px solid #f5f5f5'
-								}}
-							>
-								<Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', mb: 3 }}>
-									<Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
-										<Box sx={{ width: 4, height: 24, background: '#e53935', borderRadius: 1 }} />
-										<Typography variant="h6" sx={{ fontWeight: 700, fontSize: 16, color: '#1a1a1a', m: 0 }}>
-											Reviews {reviews.length > 0 && `(${reviews.length})`}
-										</Typography>
-									</Box>
-									{!showAddReview && (
-										<Button 
-											variant="contained"
-											onClick={handleAddReview}
-											sx={{ 
-												background: '#e53935',
-												color: '#fff',
-												fontWeight: 600,
-												fontSize: 13,
-												borderRadius: 2,
-												px: 2,
-												py: 0.75,
-												'&:hover': { background: '#c62828' }
-											}}
-										>
-											Leave Review
-										</Button>
-									)}
-								</Box>
-
-								{reviews.length === 0 && !showAddReview && (
-									<Box sx={{ textAlign: 'center', py: 4 }}>
-										<Typography variant="body2" sx={{ color: '#999', mb: 2 }}>
-											No reviews yet. Be the first to share your experience!
-										</Typography>
-										<Button 
-											variant="contained"
-											onClick={handleAddReview}
-											sx={{ 
-												background: '#e53935',
-												color: '#fff',
-												fontWeight: 600,
-												'&:hover': { background: '#c62828' }
-											}}
-										>
-											Write a Review
-										</Button>
-									</Box>
-								)}
-
-								{showAddReview && (
-									<Box sx={{ mb: 3, p: 3, background: '#f8f9fa', borderRadius: 2, border: '1px solid #eee' }}>
-										<form onSubmit={handleReviewSubmit}>
-											<Stack spacing={2}>
-												<Box>
-													<Typography variant="body2" sx={{ fontWeight: 600, mb: 1, color: '#1a1a1a' }}>
-														Overall Rating <span style={{ color: '#e53935' }}>*</span>
-													</Typography>
-													<Rating
-														value={overallRating || 0}
-														size="large"
-														onChange={(_, value) => handleOverallChange(value)}
-													/>
-												</Box>
-												<TextField 
-													label="Your feedback" 
-													multiline 
-													rows={3}
-													value={reviewText} 
-													onChange={e => setReviewText(e.target.value)}
-													fullWidth
-													variant="outlined"
-													sx={{
-														'& .MuiOutlinedInput-root': {
-															borderRadius: 1.5,
-															fontSize: 14
-														}
-													}}
-												/>
-												<Box>
-													<Typography variant="body2" sx={{ fontWeight: 600, mb: 1.5, color: '#1a1a1a' }}>Rate specific areas (optional)</Typography>
-													<Grid container spacing={2}>
-														{metricLabels.map(m => (
-															<Grid item xs={6} sm={3} key={m.key}>
-																<Box>
-																	<Typography variant="caption" sx={{ fontWeight: 500, color: '#666', display: 'block', mb: 1 }}>{m.label}</Typography>
-																	<Rating
-																		name={m.key}
-																		value={reviewMetrics[m.key] || 0}
-																		onChange={(_, value) => handleReviewChange(m.key, value)}
-																		size="small"
-																	/>
-																</Box>
-															</Grid>
-														))}
-													</Grid>
-												</Box>
-												<Button 
-													type="submit" 
-													variant="contained"
-													fullWidth
-													sx={{ 
-														background: '#e53935',
-														color: '#fff',
-														fontWeight: 600,
-														py: 1,
-														borderRadius: 2,
-														'&:hover': { background: '#c62828' }
-													}}
-												>
-													Submit Review
-												</Button>
-											</Stack>
-										</form>
-									</Box>
-								)}
-
-								{/* Review Cards */}
-								{reviews.length > 0 && (
-									<Stack spacing={2}>
-										{reviews.map((review, idx) => (
-											<Box 
-												key={idx}
-												sx={{ 
-													p: 3,
-													background: '#fff',
-													borderRadius: 2,
-													border: '1px solid #f0f0f0',
-													transition: 'all 0.3s cubic-bezier(0.4, 0, 0.2, 1)',
-													'&:hover': {
-														boxShadow: '0 4px 12px rgba(0, 0, 0, 0.12)',
-														borderColor: '#e0e0e0',
-														transform: 'translateY(-2px)'
-													}
-												}}
-											>
-												{/* Testimonial Header */}
-												<Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', mb: 1.5, gap: 2 }}>
-													<Box sx={{ display: 'flex', gap: 1.5, flex: 1 }}>
-														<Avatar 
-															src={review.client?.profilePicture} 
-															alt={review.client?.name}
-															sx={{ width: 32, height: 32 }}
-														/>
-														<Box>
-															<Typography variant="body2" sx={{ fontWeight: 600, color: '#1a1a1a' }}>
-																{review.client?.name || 'Anonymous'}
-															</Typography>
-															<Typography variant="caption" sx={{ color: '#999' }}>
-																{new Date(review.createdAt).toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' })}
-															</Typography>
-														</Box>
-													</Box>
-													<Box sx={{ display: 'flex', gap: 0.2 }}>
-														{[...Array(5)].map((_, i) => (
-															<StarIcon 
-																key={i} 
-																sx={{ 
-																	color: i < review.rating ? '#ffc107' : '#e0e0e0', 
-																	fontSize: 14 
-																}} 
-															/>
-														))}
-													</Box>
-												</Box>
-
-												{/* Comment */}
-												<Typography variant="body2" sx={{ color: '#555', lineHeight: 1.7, mb: 1.5 }}>
-													"{review.comment}"
-												</Typography>
-
-												{/* Metrics Grid (if any) */}
-												{review.metrics && Object.values(review.metrics).some(v => v > 0) && (
-													<Box sx={{ pt: 1.5, borderTop: '1px solid #e0e0e0' }}>
-														<Grid container spacing={1.5} sx={{ mt: 0 }}>
-															{metricLabels.map(m => 
-																review.metrics?.[m.key] > 0 ? (
-																	<Grid item xs={6} sm={3} key={m.key}>
-																		<Box>
-																			<Typography variant="caption" sx={{ color: '#999', fontWeight: 500, display: 'block', mb: 0.5 }}>
-																				{m.label}
-																			</Typography>
-																			<Box sx={{ display: 'flex', gap: 0.1 }}>
-																				{[...Array(5)].map((_, i) => (
-																					<StarIcon 
-																						key={i} 
-																						sx={{ 
-																							color: i < review.metrics[m.key] ? '#e53935' : '#e0e0e0', 
-																							fontSize: 10 
-																						}} 
-																					/>
-																				))}
-																			</Box>
-																		</Box>
-																	</Grid>
-																) : null
-															)}
-														</Grid>
-													</Box>
-												)}
-											</Box>
-										))}
-									</Stack>
-								)}
-							</Box>
-						</Grid>
-					</Grid>
-			</Container>
+							)}
+						</Box>
+					</Container>
+				</Box>
 			</Box>
 			<Dialog open={loginPromptOpen} onClose={handleLoginPromptClose} PaperProps={{ sx: { borderRadius: 3, minWidth: 320, maxWidth: 400, boxShadow: '0 4px 16px rgba(0, 0, 0, 0.12)' } }}>
 				<DialogTitle sx={{ background: '#fff', color: '#1a1a1a', fontWeight: 700, fontSize: 16, pb: 1.5 }}>Please log in to message this trainer</DialogTitle>
@@ -737,7 +773,7 @@ const TrainerProfile = () => {
 						Thank you for sharing your feedback!
 					</Typography>
 					<Typography sx={{ fontSize: 13, color: '#999' }}>
-						Your review helps other clients learn about this trainer's expertise.
+						Your review helps other clients learn about this trainer.
 					</Typography>
 				</DialogContent>
 				<DialogActions sx={{ pb: 2.5, px: 3, justifyContent: 'center', background: '#fff' }}>

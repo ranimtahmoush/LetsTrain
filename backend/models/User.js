@@ -7,6 +7,8 @@ const userSchema = new mongoose.Schema({
   role: { type: String, enum: ['client', 'trainer'], required: true },
   location: { type: String }, // City in Lebanon
   phone: { type: String },
+  instagram: { type: String }, // Instagram handle
+  tiktok: { type: String }, // TikTok handle
   createdAt: { type: Date, default: Date.now }
 });
 
